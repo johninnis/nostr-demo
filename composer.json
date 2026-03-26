@@ -1,0 +1,39 @@
+{
+    "name": "innis/nostr-demo",
+    "description": "Demo project showcasing nostr-core, nostr-client, and nostr-relay working together",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "John Innis",
+            "email": "john@innis.xyz",
+            "homepage": "https://www.innis.xyz/"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "innis/nostr-client": "^0.1",
+        "innis/nostr-core": "^0.1",
+        "innis/nostr-relay": "^0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.85",
+        "phpstan/phpstan": "^2.0"
+    },
+    "scripts": {
+        "test": [
+            "@analyse"
+        ],
+        "analyse": "phpstan analyse",
+        "fix-style": "php-cs-fixer fix",
+        "check-style": "php-cs-fixer fix --dry-run --diff"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

@@ -1,0 +1,11 @@
+parameters:
+    level: 9
+    paths:
+        - src
+        - bin
+    tmpDir: var/phpstan
+    reportUnmatchedIgnoredErrors: true
+    ignoreErrors:
+        # PHP cannot express generic array types natively (e.g. array<string,mixed>)
+        -
+            identifier: missingType.iterableValue
