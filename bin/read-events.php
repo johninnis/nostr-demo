@@ -16,6 +16,8 @@ use Innis\Nostr\Core\Domain\ValueObject\Protocol\RelayUrl;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\SubscriptionId;
 use Psr\Log\NullLogger;
 
+use function Amp\delay;
+
 $relayUrl = RelayUrl::fromString($argv[1] ?? 'ws://127.0.0.1:8080');
 
 if (null === $relayUrl) {
@@ -24,6 +26,7 @@ if (null === $relayUrl) {
 }
 
 $authorFilter = null;
+$searchTerm = null;
 
 if (isset($argv[2])) {
     $authorKey = PublicKey::fromHex($argv[2]);
@@ -32,6 +35,10 @@ if (isset($argv[2])) {
         exit(1);
     }
     $authorFilter = [$authorKey->toHex()];
+}
+
+if (isset($argv[3])) {
+    $searchTerm = $argv[3];
 }
 
 printf("=== Nostr Read Events Demo ===\n\n");
@@ -44,13 +51,18 @@ try {
     printf("Connected\n\n");
 
     if (null !== $authorFilter) {
-        printf("Filtering by author: %s\n\n", $authorFilter[0]);
+        printf("Filtering by author: %s\n", $authorFilter[0]);
     }
+    if (null !== $searchTerm) {
+        printf("Searching for: %s\n", $searchTerm);
+    }
+    printf("\n");
 
     $filter = new Filter(
         authors: $authorFilter,
         kinds: [EventKind::TEXT_NOTE],
         limit: 50,
+        search: $searchTerm,
     );
 
     $validationService = new EventValidationService();
@@ -92,7 +104,7 @@ try {
     printf("Subscribed (id: %s)\n", (string) $subscriptionId);
     printf("Listening for 30 seconds...\n\n");
 
-    \Amp\delay(30);
+    delay(30);
 
     $client->unsubscribe($relayUrl, $subscriptionId);
     printf("Unsubscribed\n");

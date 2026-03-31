@@ -42,10 +42,16 @@ final class DemoRelayConfig implements RelayConfigInterface
             relayUrl: $relayUrl,
             name: 'Nostr Demo Relay',
             description: 'A local demo relay for testing',
-            supportedNips: [1, 11],
+            supportedNips: [1, 9, 11, 42, 50],
             software: 'innis/nostr-relay',
             version: 'dev',
         );
+    }
+
+    public function getRelayUrl(): RelayUrl
+    {
+        return RelayUrl::fromString('ws://'.$this->host.':'.$this->port)
+            ?? throw new InvalidArgumentException('Invalid relay URL: ws://'.$this->host.':'.$this->port);
     }
 
     public function getRateLimitConfig(): RateLimitConfig

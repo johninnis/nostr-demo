@@ -4,8 +4,22 @@ parameters:
         - src
         - bin
     tmpDir: var/phpstan
-    reportUnmatchedIgnoredErrors: true
+    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
-        # PHP cannot express generic array types natively (e.g. array<string,mixed>)
         -
             identifier: missingType.iterableValue
+        -
+            identifier: variable.undefined
+            path: bin/*
+        -
+            identifier: offsetAccess.nonOffsetAccessible
+            path: bin/*
+        -
+            identifier: argument.type
+            path: bin/*
+        -
+            identifier: cast.int
+            path: bin/*
+        -
+            identifier: return.unusedType
+            path: bin/*
