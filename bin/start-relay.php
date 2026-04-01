@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 require __DIR__.'/../vendor/autoload.php';
 
-use App\Infrastructure\Relay\AuthRequiredPolicy;
 use App\Infrastructure\Relay\DemoRelayConfig;
 use App\Infrastructure\Relay\InMemoryEventStore;
 use Innis\Nostr\Relay\Application\Service\AuthenticationManager;
+use Innis\Nostr\Relay\Application\Service\RelayPolicy;
 use Innis\Nostr\Relay\Domain\Exception\ConnectionException;
 use Innis\Nostr\Relay\Infrastructure\Server\RelayServerFactory;
 use Psr\Log\NullLogger;
@@ -25,15 +25,23 @@ if (null === $adminPubkey || 64 !== strlen($adminPubkey)) {
 $config = new DemoRelayConfig($host, $port);
 $eventStore = new InMemoryEventStore();
 $authManager = new AuthenticationManager();
-$policy = new AuthRequiredPolicy($authManager, $adminPubkey);
 $logger = new NullLogger();
+
+$policy = new RelayPolicy($authManager, $logger, [
+    'tenants' => [$adminPubkey],
+    'guest' => [
+        'read' => [
+            ['kinds' => [0, 1], 'from' => 'tenants'],
+        ],
+    ],
+]);
 
 $factory = new RelayServerFactory($eventStore, $policy, $config, $authManager, $logger);
 $relay = $factory->create();
 
 printf("Starting Nostr relay on ws://%s:%d\n", $host, $port);
 printf("Admin pubkey: %s\n", $adminPubkey);
-printf("Policy: authenticated users can submit any event, unauthenticated users see only admin kind 1 events\n");
+printf("Tenants can submit any event, guests can read kind 0 and 1 from tenants\n");
 printf("Press Ctrl+C to stop\n\n");
 
 try {
