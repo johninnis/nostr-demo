@@ -2,7 +2,7 @@
 
 Demo project showcasing [nostr-core](https://github.com/johninnis/nostr-core), [nostr-client](https://github.com/johninnis/nostr-client), and [nostr-relay](https://github.com/johninnis/nostr-relay) working together.
 
-Four standalone scripts demonstrate key generation, running a local relay, publishing events, and reading events back -- all with cryptographic signing and validation via nostr-core.
+Four standalone scripts demonstrate key generation, running a local relay with tenant-based access control, publishing events with NIP-42 authentication, and reading events as a guest.
 
 ## Requirements
 
@@ -28,27 +28,25 @@ Outputs a new key pair (hex and bech32), creates a text note, signs it, verifies
 
 ### Start Relay
 
-Starts a local in-memory relay server. Blocks until stopped with Ctrl+C.
+Starts a local in-memory relay server with tenant-based access control via `RelayPolicy`. Guests can read kind 0 and 1 events from tenants. Blocks until stopped with Ctrl+C.
 
 ```bash
-php bin/start-relay.php [host] [port]
+php bin/start-relay.php 127.0.0.1 8080 <admin-pubkey-hex>
 ```
 
-Defaults to `127.0.0.1:8080`.
+The admin pubkey hex is required as the third argument and is configured as the relay tenant.
 
 ### Publish Events
 
-Generates a new identity and publishes three demo text notes to the relay.
+Connects to the relay with the admin private key, authenticates via NIP-42, and demonstrates event publishing, NIP-09 deletion, NIP-50 search, and guest vs admin event visibility.
 
 ```bash
-php bin/publish-events.php [relay-url]
+php bin/publish-events.php ws://127.0.0.1:8080 <admin-private-key-hex>
 ```
-
-Defaults to `ws://127.0.0.1:8080`. Prints the public key hex for use with `read-events.php`.
 
 ### Read Events
 
-Subscribes to text notes on the relay and displays them with full validation. Listens for 30 seconds then disconnects.
+Subscribes to text notes on the relay and displays them with full validation. Connects as an unauthenticated client (guest), so only sees tenant events matching guest read rules. Listens for 30 seconds then disconnects.
 
 ```bash
 php bin/read-events.php [relay-url] [author-pubkey-hex]
@@ -58,35 +56,38 @@ Defaults to `ws://127.0.0.1:8080`. The author filter is optional -- omit it to r
 
 ## Full Walkthrough
 
-Open three terminals:
-
 ```bash
-# Terminal 1 - start the relay
-php bin/start-relay.php
+# Terminal 1 - generate keys and start relay
+php bin/generate-keys.php
+# copy the hex private key and public key
 
-# Terminal 2 - publish events
-php bin/publish-events.php
-# note the pubkey hex from the output
+php bin/start-relay.php 127.0.0.1 8080 <public-key-hex>
 
-# Terminal 3 - read events
-php bin/read-events.php ws://127.0.0.1:8080 <pubkey-hex>
+# Terminal 2 - publish and query
+php bin/publish-events.php ws://127.0.0.1:8080 <private-key-hex>
+
+# Optional: read as unauthenticated guest
+php bin/read-events.php ws://127.0.0.1:8080
 ```
 
 ## Project Structure
 
 ```
 bin/
-  generate-keys.php        # Key generation and event signing demo
-  start-relay.php          # Local relay server
-  publish-events.php       # Publish demo events
-  read-events.php          # Subscribe and read events
+  generate-keys.php
+  start-relay.php
+  publish-events.php
+  read-events.php
 src/
   Infrastructure/
+    Client/
+      EventCollector.php
     Relay/
-      InMemoryEventStore.php   # In-memory event storage
-      OpenPolicy.php           # Permissive relay policy
-      DemoRelayConfig.php      # Relay configuration
+      InMemoryEventStore.php
+      DemoRelayConfig.php
 ```
+
+The relay policy now comes from the library (`RelayPolicy`), so no local policy classes are needed.
 
 ## Licence
 
