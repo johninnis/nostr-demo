@@ -10,10 +10,12 @@ use Innis\Nostr\Core\Application\Port\EventHandlerInterface;
 use Innis\Nostr\Core\Domain\Entity\Event;
 use Innis\Nostr\Core\Domain\Entity\Filter;
 use Innis\Nostr\Core\Domain\Service\EventValidationService;
+use Innis\Nostr\Core\Domain\Service\NipComplianceValidator;
 use Innis\Nostr\Core\Domain\ValueObject\Content\EventKind;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\PublicKey;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\RelayUrl;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\SubscriptionId;
+use Innis\Nostr\Core\Infrastructure\Adapter\Secp256k1SignatureAdapter;
 use Psr\Log\NullLogger;
 
 use function Amp\delay;
@@ -65,7 +67,8 @@ try {
         search: $searchTerm,
     );
 
-    $validationService = new EventValidationService();
+    $signatureService = Secp256k1SignatureAdapter::create();
+    $validationService = new EventValidationService($signatureService, new NipComplianceValidator($signatureService));
 
     $handler = new class($validationService) implements EventHandlerInterface {
         public function __construct(

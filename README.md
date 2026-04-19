@@ -8,6 +8,14 @@ Four standalone scripts demonstrate key generation, running a local relay with t
 
 - PHP 8.3 or higher
 
+## Dependencies
+
+| Package | Version |
+| --- | --- |
+| [innis/nostr-core](https://github.com/johninnis/nostr-core) | `^0.3` |
+| [innis/nostr-client](https://github.com/johninnis/nostr-client) | `^0.1.3` |
+| [innis/nostr-relay](https://github.com/johninnis/nostr-relay) | `^0.1.12` |
+
 ## Install
 
 ```bash
@@ -49,10 +57,10 @@ php bin/publish-events.php ws://127.0.0.1:8080 <admin-private-key-hex>
 Subscribes to text notes on the relay and displays them with full validation. Connects as an unauthenticated client (guest), so only sees tenant events matching guest read rules. Listens for 30 seconds then disconnects.
 
 ```bash
-php bin/read-events.php [relay-url] [author-pubkey-hex]
+php bin/read-events.php [relay-url] [author-pubkey-hex] [search-term]
 ```
 
-Defaults to `ws://127.0.0.1:8080`. The author filter is optional -- omit it to receive all text notes.
+Defaults to `ws://127.0.0.1:8080`. The author filter and search term are optional -- omit them to receive all text notes.
 
 ## Full Walkthrough
 

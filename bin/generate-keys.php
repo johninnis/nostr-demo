@@ -6,11 +6,15 @@ require __DIR__.'/../vendor/autoload.php';
 
 use Innis\Nostr\Core\Domain\Factory\EventFactory;
 use Innis\Nostr\Core\Domain\Service\EventValidationService;
+use Innis\Nostr\Core\Domain\Service\NipComplianceValidator;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\KeyPair;
+use Innis\Nostr\Core\Infrastructure\Adapter\Secp256k1SignatureAdapter;
 
 printf("=== Nostr Key Generation Demo ===\n\n");
 
-$keyPair = KeyPair::generate();
+$signatureService = Secp256k1SignatureAdapter::create();
+
+$keyPair = KeyPair::generate($signatureService);
 $privateKey = $keyPair->getPrivateKey();
 $publicKey = $keyPair->getPublicKey();
 
@@ -26,7 +30,7 @@ $unsignedEvent = EventFactory::createTextNote($publicKey, 'Hello from nostr-demo
 printf("Unsigned event created (kind %d)\n", $unsignedEvent->getKind()->toInt());
 printf("Event is signed: %s\n\n", $unsignedEvent->isSigned() ? 'yes' : 'no');
 
-$signedEvent = $unsignedEvent->sign($privateKey);
+$signedEvent = $unsignedEvent->sign($keyPair, $signatureService);
 
 printf("Event signed successfully\n");
 printf("Event ID: %s\n", $signedEvent->getId()->toHex());
@@ -34,12 +38,12 @@ printf("Event is signed: %s\n\n", $signedEvent->isSigned() ? 'yes' : 'no');
 
 printf("=== Signature Verification ===\n\n");
 
-$isValid = $signedEvent->verify();
+$isValid = $signedEvent->verify($signatureService);
 printf("Signature valid: %s\n\n", $isValid ? 'yes' : 'no');
 
 printf("=== Full Event Validation ===\n\n");
 
-$validationService = new EventValidationService();
+$validationService = new EventValidationService($signatureService, new NipComplianceValidator($signatureService));
 $validationService->validateEvent($signedEvent);
 printf("Event passed full validation (timestamp, content, tags, signature)\n\n");
 
