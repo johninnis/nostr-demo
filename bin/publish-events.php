@@ -137,6 +137,8 @@ try {
     printf("  Deletion event: %s (id: %s)\n", $accepted ? 'accepted' : 'rejected', $signedDeletion->getId()->toHex());
     printf("  Targeted event: %s\n", $signedDeleteTarget->getId()->toHex());
 
+    $client->awaitPendingPublishes($relayUrl, 5.0);
+
     $client->disconnect($relayUrl);
     printf("  Disconnected authenticated client\n");
 

@@ -7,23 +7,24 @@ namespace App\Infrastructure\Relay;
 use Innis\Nostr\Core\Domain\Entity\Event;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\PublicKey;
 use Innis\Nostr\Relay\Application\Port\RelayEventStoreInterface;
+use Innis\Nostr\Relay\Domain\Enum\EventStoreOutcome;
 
 final class InMemoryEventStore implements RelayEventStoreInterface
 {
     /** @var array<string, Event> */
     private array $events = [];
 
-    public function store(Event $event): bool
+    public function store(Event $event): EventStoreOutcome
     {
         $id = $event->getId()->toHex();
 
         if (isset($this->events[$id])) {
-            return false;
+            return EventStoreOutcome::Duplicate;
         }
 
         $this->events[$id] = $event;
 
-        return true;
+        return EventStoreOutcome::Stored;
     }
 
     public function findByFilters(array $filters, int $limit = 100): array
