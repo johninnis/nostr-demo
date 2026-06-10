@@ -14,7 +14,7 @@
         "php": "^8.3",
         "innis/nostr-client": "^0.1.7",
         "innis/nostr-core": "^0.3",
-        "innis/nostr-relay": "^0.1.12"
+        "innis/nostr-relay": "^0.2"
     },
     "autoload": {
         "psr-4": {
