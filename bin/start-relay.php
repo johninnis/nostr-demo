@@ -7,7 +7,7 @@ require __DIR__.'/../vendor/autoload.php';
 use App\Infrastructure\Relay\DemoRelayConfig;
 use App\Infrastructure\Relay\InMemoryEventStore;
 use Innis\Nostr\Core\Infrastructure\Crypto\NativeRandomBytesGenerator;
-use Innis\Nostr\Relay\Application\Service\AuthenticationManager;
+use Innis\Nostr\Relay\Application\Service\InMemoryAuthenticationRegistry;
 use Innis\Nostr\Relay\Application\Service\RelayPolicy;
 use Innis\Nostr\Relay\Domain\Exception\ConnectionException;
 use Innis\Nostr\Relay\Domain\ValueObject\RelayPolicyConfig;
@@ -30,7 +30,7 @@ if (null === $adminPubkey || 64 !== strlen($adminPubkey)) {
 
 $config = new DemoRelayConfig($host, $port);
 $eventStore = new InMemoryEventStore();
-$authManager = new AuthenticationManager(new NativeRandomBytesGenerator());
+$authManager = new InMemoryAuthenticationRegistry(new NativeRandomBytesGenerator());
 $logger = new NullLogger();
 
 $policyConfig = RelayPolicyConfig::fromArray([
