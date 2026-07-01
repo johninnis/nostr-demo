@@ -1,3 +1,6 @@
+includes:
+    - vendor/innis/coding-standards/extension.neon
+
 parameters:
     level: 9
     paths:
