@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Relay;
 
+use Innis\Nostr\Core\Domain\Collection\EventCollection;
+use Innis\Nostr\Core\Domain\Collection\EventCoordinateCollection;
+use Innis\Nostr\Core\Domain\Collection\EventIdCollection;
+use Innis\Nostr\Core\Domain\Collection\FilterCollection;
 use Innis\Nostr\Core\Domain\Entity\Event;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\PublicKey;
 use Innis\Nostr\Relay\Application\Port\RelayEventStoreInterface;
@@ -27,7 +31,7 @@ final class InMemoryEventStore implements RelayEventStoreInterface
         return EventStoreOutcome::Stored;
     }
 
-    public function findByFilters(array $filters, int $limit = 100): array
+    public function findByFilters(FilterCollection $filters, int $limit = 100): EventCollection
     {
         $matched = [];
 
@@ -44,15 +48,15 @@ final class InMemoryEventStore implements RelayEventStoreInterface
             }
         }
 
-        return $matched;
+        return new EventCollection($matched);
     }
 
-    public function countByFilters(array $filters): int
+    public function countByFilters(FilterCollection $filters): int
     {
-        return count($this->findByFilters($filters, PHP_INT_MAX));
+        return $this->findByFilters($filters, PHP_INT_MAX)->count();
     }
 
-    public function deleteByEventIds(array $eventIds, PublicKey $author): int
+    public function deleteByEventIds(EventIdCollection $eventIds, PublicKey $author): int
     {
         $deleted = 0;
 
@@ -68,7 +72,7 @@ final class InMemoryEventStore implements RelayEventStoreInterface
         return $deleted;
     }
 
-    public function deleteByCoordinates(array $coordinates, PublicKey $author): int
+    public function deleteByCoordinates(EventCoordinateCollection $coordinates, PublicKey $author): int
     {
         $deleted = 0;
 

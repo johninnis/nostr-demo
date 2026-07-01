@@ -5,14 +5,14 @@ declare(strict_types=1);
 require __DIR__.'/../vendor/autoload.php';
 
 use Innis\Nostr\Core\Domain\Factory\EventFactory;
-use Innis\Nostr\Core\Domain\Service\EventValidationService;
+use Innis\Nostr\Core\Domain\Service\EventValidator;
 use Innis\Nostr\Core\Domain\Service\NipComplianceValidator;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\KeyPair;
-use Innis\Nostr\Core\Infrastructure\Adapter\Secp256k1SignatureAdapter;
+use Innis\Nostr\Core\Infrastructure\Crypto\Secp256k1Signer;
 
 printf("=== Nostr Key Generation Demo ===\n\n");
 
-$signatureService = Secp256k1SignatureAdapter::create();
+$signatureService = Secp256k1Signer::create();
 
 $keyPair = KeyPair::generate($signatureService);
 $privateKey = $keyPair->getPrivateKey();
@@ -43,7 +43,7 @@ printf("Signature valid: %s\n\n", $isValid ? 'yes' : 'no');
 
 printf("=== Full Event Validation ===\n\n");
 
-$validationService = new EventValidationService($signatureService, new NipComplianceValidator($signatureService));
+$validationService = new EventValidator($signatureService, new NipComplianceValidator($signatureService));
 $validationService->validateEvent($signedEvent);
 printf("Event passed full validation (timestamp, content, tags, signature)\n\n");
 

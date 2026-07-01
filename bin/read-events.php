@@ -7,15 +7,17 @@ require __DIR__.'/../vendor/autoload.php';
 use Innis\Nostr\Client\Domain\Exception\ConnectionException;
 use Innis\Nostr\Client\Infrastructure\Factory\NostrClientFactory;
 use Innis\Nostr\Core\Application\Port\EventHandlerInterface;
+use Innis\Nostr\Core\Domain\Collection\EventKindCollection;
+use Innis\Nostr\Core\Domain\Collection\PublicKeyCollection;
 use Innis\Nostr\Core\Domain\Entity\Event;
-use Innis\Nostr\Core\Domain\Entity\Filter;
-use Innis\Nostr\Core\Domain\Service\EventValidationService;
+use Innis\Nostr\Core\Domain\Service\EventValidator;
 use Innis\Nostr\Core\Domain\Service\NipComplianceValidator;
 use Innis\Nostr\Core\Domain\ValueObject\Content\EventKind;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\PublicKey;
+use Innis\Nostr\Core\Domain\ValueObject\Protocol\Filter;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\RelayUrl;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\SubscriptionId;
-use Innis\Nostr\Core\Infrastructure\Adapter\Secp256k1SignatureAdapter;
+use Innis\Nostr\Core\Infrastructure\Crypto\Secp256k1Signer;
 use Psr\Log\NullLogger;
 
 use function Amp\delay;
@@ -27,7 +29,7 @@ if (null === $relayUrl) {
     exit(1);
 }
 
-$authorFilter = null;
+$authorKey = null;
 $searchTerm = null;
 
 if (isset($argv[2])) {
@@ -36,7 +38,6 @@ if (isset($argv[2])) {
         fprintf(STDERR, "Invalid public key hex: %s\n", $argv[2]);
         exit(1);
     }
-    $authorFilter = [$authorKey->toHex()];
 }
 
 if (isset($argv[3])) {
@@ -52,8 +53,8 @@ try {
     $client->connect($relayUrl);
     printf("Connected\n\n");
 
-    if (null !== $authorFilter) {
-        printf("Filtering by author: %s\n", $authorFilter[0]);
+    if (null !== $authorKey) {
+        printf("Filtering by author: %s\n", $authorKey->toHex());
     }
     if (null !== $searchTerm) {
         printf("Searching for: %s\n", $searchTerm);
@@ -61,18 +62,18 @@ try {
     printf("\n");
 
     $filter = new Filter(
-        authors: $authorFilter,
-        kinds: [EventKind::TEXT_NOTE],
+        authors: null !== $authorKey ? new PublicKeyCollection([$authorKey]) : null,
+        kinds: EventKindCollection::fromInts([EventKind::TEXT_NOTE]),
         limit: 50,
         search: $searchTerm,
     );
 
-    $signatureService = Secp256k1SignatureAdapter::create();
-    $validationService = new EventValidationService($signatureService, new NipComplianceValidator($signatureService));
+    $signatureService = Secp256k1Signer::create();
+    $validationService = new EventValidator($signatureService, new NipComplianceValidator($signatureService));
 
     $handler = new class($validationService) implements EventHandlerInterface {
         public function __construct(
-            private readonly EventValidationService $validationService,
+            private readonly EventValidator $validationService,
         ) {
         }
 

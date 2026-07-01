@@ -12,9 +12,9 @@
     ],
     "require": {
         "php": "^8.3",
-        "innis/nostr-client": "^0.1.7",
-        "innis/nostr-core": "^0.3",
-        "innis/nostr-relay": "^0.2"
+        "innis/nostr-client": "@dev",
+        "innis/nostr-core": "@dev",
+        "innis/nostr-relay": "@dev"
     },
     "autoload": {
         "psr-4": {

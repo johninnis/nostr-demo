@@ -38,14 +38,13 @@ final class DemoRelayConfig implements RelayConfigInterface
         $relayUrl = RelayUrl::fromString('ws://'.$this->host.':'.$this->port)
             ?? throw new InvalidArgumentException('Invalid relay URL: ws://'.$this->host.':'.$this->port);
 
-        return new Nip11Info(
-            relayUrl: $relayUrl,
-            name: 'Nostr Demo Relay',
-            description: 'A local demo relay for testing',
-            supportedNips: [1, 9, 11, 42, 50],
-            software: 'innis/nostr-relay',
-            version: 'dev',
-        );
+        return Nip11Info::fromArray($relayUrl, [
+            'name' => 'Nostr Demo Relay',
+            'description' => 'A local demo relay for testing',
+            'supported_nips' => [1, 9, 11, 42, 50],
+            'software' => 'innis/nostr-relay',
+            'version' => 'dev',
+        ]);
     }
 
     public function getRelayUrl(): RelayUrl

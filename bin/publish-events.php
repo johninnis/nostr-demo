@@ -5,19 +5,21 @@ declare(strict_types=1);
 require __DIR__.'/../vendor/autoload.php';
 
 use App\Infrastructure\Client\EventCollector;
-use Innis\Nostr\Client\Domain\Service\AuthChallengeHandlerInterface;
+use Innis\Nostr\Client\Application\Port\AuthChallengeHandlerInterface;
 use Innis\Nostr\Client\Infrastructure\Factory\NostrClientFactory;
+use Innis\Nostr\Core\Domain\Collection\EventKindCollection;
+use Innis\Nostr\Core\Domain\Collection\TagCollection;
 use Innis\Nostr\Core\Domain\Entity\Event;
-use Innis\Nostr\Core\Domain\Entity\Filter;
 use Innis\Nostr\Core\Domain\Factory\EventFactory;
+use Innis\Nostr\Core\Domain\Service\SignatureServiceInterface;
 use Innis\Nostr\Core\Domain\ValueObject\Content\EventKind;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\KeyPair;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\PrivateKey;
+use Innis\Nostr\Core\Domain\ValueObject\Protocol\Filter;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\RelayUrl;
 use Innis\Nostr\Core\Domain\ValueObject\Tag\Tag;
-use Innis\Nostr\Core\Domain\ValueObject\Tag\TagCollection;
 use Innis\Nostr\Core\Domain\ValueObject\Tag\TagType;
-use Innis\Nostr\Core\Infrastructure\Adapter\Secp256k1SignatureAdapter;
+use Innis\Nostr\Core\Infrastructure\Crypto\Secp256k1Signer;
 use Psr\Log\NullLogger;
 
 use function Amp\delay;
@@ -37,7 +39,7 @@ if (null === $adminPrivateKeyHex) {
     exit(1);
 }
 
-$signatureService = Secp256k1SignatureAdapter::create();
+$signatureService = Secp256k1Signer::create();
 
 $adminKey = PrivateKey::fromHex($adminPrivateKeyHex);
 if (null === $adminKey) {
@@ -56,7 +58,7 @@ $authHandler = new class($adminKeyPair, $relayUrl, $signatureService) implements
     public function __construct(
         private readonly KeyPair $keyPair,
         private readonly RelayUrl $relayUrl,
-        private readonly Secp256k1SignatureAdapter $signatureService,
+        private readonly SignatureServiceInterface $signatureService,
     ) {
     }
 
@@ -86,8 +88,8 @@ try {
         'Admin note: Welcome to the Nostr demo relay.',
     );
     $signedAdminNote = $adminNote->sign($adminKeyPair, $signatureService);
-    $accepted = $client->publishEvent($relayUrl, $signedAdminNote);
-    printf("  Admin event 1: %s (id: %s)\n", $accepted ? 'accepted' : 'rejected', $signedAdminNote->getId()->toHex());
+    $result = $client->publishEvent($relayUrl, $signedAdminNote)->await();
+    printf("  Admin event 1: %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $signedAdminNote->getId()->toHex());
 
     $adminSearchNote = EventFactory::createTextNote(
         $adminPubkey,
@@ -98,16 +100,16 @@ try {
         ]),
     );
     $signedAdminSearch = $adminSearchNote->sign($adminKeyPair, $signatureService);
-    $accepted = $client->publishEvent($relayUrl, $signedAdminSearch);
-    printf("  Admin event 2: %s (id: %s)\n", $accepted ? 'accepted' : 'rejected', $signedAdminSearch->getId()->toHex());
+    $result = $client->publishEvent($relayUrl, $signedAdminSearch)->await();
+    printf("  Admin event 2: %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $signedAdminSearch->getId()->toHex());
 
     $adminDeleteTarget = EventFactory::createTextNote(
         $adminPubkey,
         'This event will be deleted shortly.',
     );
     $signedDeleteTarget = $adminDeleteTarget->sign($adminKeyPair, $signatureService);
-    $accepted = $client->publishEvent($relayUrl, $signedDeleteTarget);
-    printf("  Admin event 3 (deletion target): %s (id: %s)\n", $accepted ? 'accepted' : 'rejected', $signedDeleteTarget->getId()->toHex());
+    $result = $client->publishEvent($relayUrl, $signedDeleteTarget)->await();
+    printf("  Admin event 3 (deletion target): %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $signedDeleteTarget->getId()->toHex());
 
     printf("\n--- Step 2: Publish guest events via authenticated connection ---\n");
 
@@ -119,8 +121,8 @@ try {
         ]),
     );
     $signedGuestNote = $guestNote->sign($guestKeyPair, $signatureService);
-    $accepted = $client->publishEvent($relayUrl, $signedGuestNote);
-    printf("  Guest event: %s (id: %s)\n", $accepted ? 'accepted' : 'rejected', $signedGuestNote->getId()->toHex());
+    $result = $client->publishEvent($relayUrl, $signedGuestNote)->await();
+    printf("  Guest event: %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $signedGuestNote->getId()->toHex());
 
     printf("\n--- Step 3: NIP-09 Delete admin event 3 ---\n");
 
@@ -128,13 +130,13 @@ try {
         $adminPubkey,
         new TagCollection([
             Tag::event($signedDeleteTarget->getId()->toHex()),
-            new Tag(TagType::parentKind(), [(string) $signedDeleteTarget->getKind()->toInt()]),
+            Tag::create(TagType::PARENT_KIND, (string) $signedDeleteTarget->getKind()->toInt()),
         ]),
         'removing test event',
     );
     $signedDeletion = $deletionEvent->sign($adminKeyPair, $signatureService);
-    $accepted = $client->publishEvent($relayUrl, $signedDeletion);
-    printf("  Deletion event: %s (id: %s)\n", $accepted ? 'accepted' : 'rejected', $signedDeletion->getId()->toHex());
+    $result = $client->publishEvent($relayUrl, $signedDeletion)->await();
+    printf("  Deletion event: %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $signedDeletion->getId()->toHex());
     printf("  Targeted event: %s\n", $signedDeleteTarget->getId()->toHex());
 
     $client->awaitPendingPublishes($relayUrl, 5.0);
@@ -149,7 +151,7 @@ try {
     printf("  Connected without auth\n");
 
     $allFilter = new Filter(
-        kinds: [EventKind::TEXT_NOTE],
+        kinds: EventKindCollection::fromInts([EventKind::TEXT_NOTE]),
         limit: 50,
     );
 
@@ -193,7 +195,7 @@ try {
     printf("\n--- Step 5: NIP-50 Search ---\n");
 
     $searchFilter = new Filter(
-        kinds: [EventKind::TEXT_NOTE],
+        kinds: EventKindCollection::fromInts([EventKind::TEXT_NOTE]),
         search: 'decentralised',
         limit: 50,
     );
