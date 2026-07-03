@@ -7,12 +7,3 @@ parameters:
         - src
         - bin
     tmpDir: var/phpstan
-    ignoreErrors:
-        -
-            identifier: missingType.iterableValue
-        -
-            identifier: variable.undefined
-            path: bin/*
-        -
-            identifier: return.unusedType
-            path: bin/*

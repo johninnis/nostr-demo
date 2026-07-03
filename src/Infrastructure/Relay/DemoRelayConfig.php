@@ -39,7 +39,7 @@ final class DemoRelayConfig implements RelayConfigInterface
 
     public function getRelayInfo(): Nip11Info
     {
-        $relayUrl = RelayUrl::fromString('ws://'.$this->host.':'.$this->port)
+        $relayUrl = RelayUrl::tryFromString('ws://'.$this->host.':'.$this->port)
             ?? throw new InvalidArgumentException('Invalid relay URL: ws://'.$this->host.':'.$this->port);
 
         return Nip11Info::fromArray($relayUrl, [
@@ -54,7 +54,7 @@ final class DemoRelayConfig implements RelayConfigInterface
     #[Override]
     public function getRelayUrl(): RelayUrl
     {
-        return RelayUrl::fromString('ws://'.$this->host.':'.$this->port)
+        return RelayUrl::tryFromString('ws://'.$this->host.':'.$this->port)
             ?? throw new InvalidArgumentException('Invalid relay URL: ws://'.$this->host.':'.$this->port);
     }
 

@@ -23,7 +23,7 @@ $port = (int) ($argv[2] ?? 8080);
 $adminPubkey = $argv[3] ?? null;
 
 if (null === $adminPubkey || 64 !== strlen($adminPubkey)) {
-    fprintf(STDERR, "Usage: php %s [host] [port] <admin-pubkey-hex>\n", $argv[0]);
+    fprintf(STDERR, "Usage: php %s [host] [port] <admin-pubkey-hex>\n", $argv[0] ?? 'start-relay.php');
     fprintf(STDERR, "  Generate a keypair with: php bin/generate-keys.php\n");
     exit(1);
 }
@@ -33,7 +33,7 @@ $eventStore = new InMemoryEventStore();
 $authManager = new InMemoryAuthenticationRegistry(new NativeRandomBytesGenerator());
 $logger = new NullLogger();
 
-$policyConfig = RelayPolicyConfig::fromArray([
+$policyConfig = RelayPolicyConfig::tryFromArray([
     'tenants' => [$adminPubkey],
     'guest' => [
         'read' => [

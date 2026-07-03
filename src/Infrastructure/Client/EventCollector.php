@@ -12,6 +12,7 @@ use Override;
 
 final class EventCollector implements EventHandlerInterface
 {
+    /** @var list<Event> */
     private array $events = [];
     private bool $eoseReceived = false;
 
@@ -37,6 +38,7 @@ final class EventCollector implements EventHandlerInterface
     {
     }
 
+    /** @return list<Event> */
     public function getEvents(): array
     {
         return $this->events;

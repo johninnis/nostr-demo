@@ -22,7 +22,7 @@ use Psr\Log\NullLogger;
 
 use function Amp\delay;
 
-$relayUrl = RelayUrl::fromString($argv[1] ?? 'ws://127.0.0.1:8080');
+$relayUrl = RelayUrl::tryFromString($argv[1] ?? 'ws://127.0.0.1:8080');
 
 if (null === $relayUrl) {
     fprintf(STDERR, "Invalid relay URL: %s\n", $argv[1] ?? '');
@@ -33,7 +33,7 @@ $authorKey = null;
 $searchTerm = null;
 
 if (isset($argv[2])) {
-    $authorKey = PublicKey::fromHex($argv[2]);
+    $authorKey = PublicKey::tryFromHex($argv[2]);
     if (null === $authorKey) {
         fprintf(STDERR, "Invalid public key hex: %s\n", $argv[2]);
         exit(1);

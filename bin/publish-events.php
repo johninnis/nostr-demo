@@ -27,21 +27,21 @@ use function Amp\delay;
 $relayUrlString = $argv[1] ?? 'ws://127.0.0.1:8080';
 $adminPrivateKeyHex = $argv[2] ?? null;
 
-$relayUrl = RelayUrl::fromString($relayUrlString);
+$relayUrl = RelayUrl::tryFromString($relayUrlString);
 if (null === $relayUrl) {
     fprintf(STDERR, "Invalid relay URL: %s\n", $relayUrlString);
     exit(1);
 }
 
 if (null === $adminPrivateKeyHex) {
-    fprintf(STDERR, "Usage: php %s [relay-url] <admin-private-key-hex>\n", $argv[0]);
+    fprintf(STDERR, "Usage: php %s [relay-url] <admin-private-key-hex>\n", $argv[0] ?? 'publish-events.php');
     fprintf(STDERR, "  Generate a keypair with: php bin/generate-keys.php\n");
     exit(1);
 }
 
 $signatureService = Secp256k1Signer::create();
 
-$adminKey = PrivateKey::fromHex($adminPrivateKeyHex);
+$adminKey = PrivateKey::tryFromHex($adminPrivateKeyHex);
 if (null === $adminKey) {
     fprintf(STDERR, "Invalid private key hex\n");
     exit(1);
@@ -63,7 +63,7 @@ $authHandler = new class($adminKeyPair, $relayUrl, $signatureService) implements
     }
 
     #[Override]
-    public function handleAuthChallenge(RelayUrl $relayUrl, string $challenge): ?Event
+    public function handleAuthChallenge(RelayUrl $relayUrl, string $challenge): Event
     {
         printf("  [AUTH] Challenge received, responding...\n");
 
