@@ -12,9 +12,9 @@ Four standalone scripts demonstrate key generation, running a local relay with t
 
 | Package | Version |
 | --- | --- |
-| [innis/nostr-core](https://github.com/johninnis/nostr-core) | `^0.3` |
-| [innis/nostr-client](https://github.com/johninnis/nostr-client) | `^0.1.7` |
-| [innis/nostr-relay](https://github.com/johninnis/nostr-relay) | `^0.2` |
+| [innis/nostr-core](https://github.com/johninnis/nostr-core) | `^0.5` |
+| [innis/nostr-client](https://github.com/johninnis/nostr-client) | `^0.5` |
+| [innis/nostr-relay](https://github.com/johninnis/nostr-relay) | `^0.5` |
 
 ## Install
 
