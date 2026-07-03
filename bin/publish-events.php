@@ -10,7 +10,7 @@ use Innis\Nostr\Client\Infrastructure\Factory\NostrClientFactory;
 use Innis\Nostr\Core\Domain\Collection\EventKindCollection;
 use Innis\Nostr\Core\Domain\Collection\TagCollection;
 use Innis\Nostr\Core\Domain\Entity\Event;
-use Innis\Nostr\Core\Domain\Factory\EventFactory;
+use Innis\Nostr\Core\Domain\Factory\RumourFactory;
 use Innis\Nostr\Core\Domain\Service\SignatureServiceInterface;
 use Innis\Nostr\Core\Domain\ValueObject\Content\EventKind;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\KeyPair;
@@ -62,16 +62,16 @@ $authHandler = new class($adminKeyPair, $relayUrl, $signatureService) implements
     ) {
     }
 
+    #[Override]
     public function handleAuthChallenge(RelayUrl $relayUrl, string $challenge): ?Event
     {
         printf("  [AUTH] Challenge received, responding...\n");
-        $authEvent = EventFactory::createAuth(
+
+        return RumourFactory::createAuth(
             $this->keyPair->getPublicKey(),
             $this->relayUrl,
             $challenge,
-        );
-
-        return $authEvent->sign($this->keyPair, $this->signatureService);
+        )->sign($this->keyPair, $this->signatureService);
     }
 };
 
@@ -83,61 +83,56 @@ try {
     $client->connect($relayUrl);
     printf("  Connected to %s\n", (string) $relayUrl);
 
-    $adminNote = EventFactory::createTextNote(
+    $adminNote = RumourFactory::createTextNote(
         $adminPubkey,
         'Admin note: Welcome to the Nostr demo relay.',
-    );
-    $signedAdminNote = $adminNote->sign($adminKeyPair, $signatureService);
-    $result = $client->publishEvent($relayUrl, $signedAdminNote)->await();
-    printf("  Admin event 1: %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $signedAdminNote->getId()->toHex());
+    )->sign($adminKeyPair, $signatureService);
+    $result = $client->publishEvent($relayUrl, $adminNote)->await();
+    printf("  Admin event 1: %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $adminNote->getId()->toHex());
 
-    $adminSearchNote = EventFactory::createTextNote(
+    $adminSearchNote = RumourFactory::createTextNote(
         $adminPubkey,
         'Nostr is a decentralised protocol for social networking.',
         new TagCollection([
             Tag::hashtag('nostr'),
             Tag::hashtag('decentralised'),
         ]),
-    );
-    $signedAdminSearch = $adminSearchNote->sign($adminKeyPair, $signatureService);
-    $result = $client->publishEvent($relayUrl, $signedAdminSearch)->await();
-    printf("  Admin event 2: %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $signedAdminSearch->getId()->toHex());
+    )->sign($adminKeyPair, $signatureService);
+    $result = $client->publishEvent($relayUrl, $adminSearchNote)->await();
+    printf("  Admin event 2: %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $adminSearchNote->getId()->toHex());
 
-    $adminDeleteTarget = EventFactory::createTextNote(
+    $deleteTarget = RumourFactory::createTextNote(
         $adminPubkey,
         'This event will be deleted shortly.',
-    );
-    $signedDeleteTarget = $adminDeleteTarget->sign($adminKeyPair, $signatureService);
-    $result = $client->publishEvent($relayUrl, $signedDeleteTarget)->await();
-    printf("  Admin event 3 (deletion target): %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $signedDeleteTarget->getId()->toHex());
+    )->sign($adminKeyPair, $signatureService);
+    $result = $client->publishEvent($relayUrl, $deleteTarget)->await();
+    printf("  Admin event 3 (deletion target): %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $deleteTarget->getId()->toHex());
 
     printf("\n--- Step 2: Publish guest events via authenticated connection ---\n");
 
-    $guestNote = EventFactory::createTextNote(
+    $guestNote = RumourFactory::createTextNote(
         $guestKeyPair->getPublicKey(),
         'Hello from a guest user on the Nostr relay.',
         new TagCollection([
             Tag::hashtag('nostr'),
         ]),
-    );
-    $signedGuestNote = $guestNote->sign($guestKeyPair, $signatureService);
-    $result = $client->publishEvent($relayUrl, $signedGuestNote)->await();
-    printf("  Guest event: %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $signedGuestNote->getId()->toHex());
+    )->sign($guestKeyPair, $signatureService);
+    $result = $client->publishEvent($relayUrl, $guestNote)->await();
+    printf("  Guest event: %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $guestNote->getId()->toHex());
 
     printf("\n--- Step 3: NIP-09 Delete admin event 3 ---\n");
 
-    $deletionEvent = EventFactory::createEventDeletion(
+    $deletion = RumourFactory::createEventDeletion(
         $adminPubkey,
         new TagCollection([
-            Tag::event($signedDeleteTarget->getId()->toHex()),
-            Tag::create(TagType::PARENT_KIND, (string) $signedDeleteTarget->getKind()->toInt()),
+            Tag::event($deleteTarget->getId()),
+            Tag::create(TagType::PARENT_KIND, (string) $deleteTarget->getKind()->toInt()),
         ]),
         'removing test event',
-    );
-    $signedDeletion = $deletionEvent->sign($adminKeyPair, $signatureService);
-    $result = $client->publishEvent($relayUrl, $signedDeletion)->await();
-    printf("  Deletion event: %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $signedDeletion->getId()->toHex());
-    printf("  Targeted event: %s\n", $signedDeleteTarget->getId()->toHex());
+    )->sign($adminKeyPair, $signatureService);
+    $result = $client->publishEvent($relayUrl, $deletion)->await();
+    printf("  Deletion event: %s (id: %s)\n", $result->isAccepted() ? 'accepted' : 'rejected', $deletion->getId()->toHex());
+    printf("  Targeted event: %s\n", $deleteTarget->getId()->toHex());
 
     $client->awaitPendingPublishes($relayUrl, 5.0);
 
@@ -178,7 +173,7 @@ try {
 
     $deletedStillExists = false;
     foreach ($receivedEvents as $event) {
-        if ($event->getId()->equals($signedDeleteTarget->getId())) {
+        if ($event->getId()->equals($deleteTarget->getId())) {
             $deletedStillExists = true;
         }
     }

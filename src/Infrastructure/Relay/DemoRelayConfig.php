@@ -9,6 +9,7 @@ use Innis\Nostr\Core\Domain\ValueObject\Protocol\RelayUrl;
 use Innis\Nostr\Relay\Application\Port\RelayConfigInterface;
 use Innis\Nostr\Relay\Domain\ValueObject\RateLimitConfig;
 use InvalidArgumentException;
+use Override;
 
 final class DemoRelayConfig implements RelayConfigInterface
 {
@@ -18,16 +19,19 @@ final class DemoRelayConfig implements RelayConfigInterface
     ) {
     }
 
+    #[Override]
     public function getHost(): string
     {
         return $this->host;
     }
 
+    #[Override]
     public function getPort(): int
     {
         return $this->port;
     }
 
+    #[Override]
     public function getMaxConnections(): int
     {
         return 100;
@@ -47,6 +51,7 @@ final class DemoRelayConfig implements RelayConfigInterface
         ]);
     }
 
+    #[Override]
     public function getRelayUrl(): RelayUrl
     {
         return RelayUrl::fromString('ws://'.$this->host.':'.$this->port)
@@ -61,6 +66,7 @@ final class DemoRelayConfig implements RelayConfigInterface
         );
     }
 
+    #[Override]
     public function getTrustedProxies(): array
     {
         return [];

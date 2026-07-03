@@ -77,6 +77,7 @@ try {
         ) {
         }
 
+        #[Override]
         public function handleEvent(Event $event, SubscriptionId $subscriptionId): void
         {
             printf("--- Event ---\n");
@@ -88,16 +89,19 @@ try {
             printf("  Valid:   %s\n\n", $this->validationService->isEventValid($event) ? 'yes' : 'no');
         }
 
+        #[Override]
         public function handleEose(SubscriptionId $subscriptionId): void
         {
             printf("--- End of stored events ---\n\n");
         }
 
+        #[Override]
         public function handleClosed(SubscriptionId $subscriptionId, string $message): void
         {
             printf("Subscription closed: %s\n", $message);
         }
 
+        #[Override]
         public function handleNotice(RelayUrl $relayUrl, string $message): void
         {
             printf("Relay notice from %s: %s\n", (string) $relayUrl, $message);

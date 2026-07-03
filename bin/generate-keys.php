@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require __DIR__.'/../vendor/autoload.php';
 
-use Innis\Nostr\Core\Domain\Factory\EventFactory;
+use Innis\Nostr\Core\Domain\Factory\RumourFactory;
 use Innis\Nostr\Core\Domain\Service\EventValidator;
 use Innis\Nostr\Core\Domain\Service\NipComplianceValidator;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\KeyPair;
@@ -25,16 +25,14 @@ printf("Public Key (npub):  %s\n\n", $publicKey->toBech32());
 
 printf("=== Event Creation and Signing ===\n\n");
 
-$unsignedEvent = EventFactory::createTextNote($publicKey, 'Hello from nostr-demo! This is a signed text note.');
+$rumour = RumourFactory::createTextNote($publicKey, 'Hello from nostr-demo! This is a signed text note.');
 
-printf("Unsigned event created (kind %d)\n", $unsignedEvent->getKind()->toInt());
-printf("Event is signed: %s\n\n", $unsignedEvent->isSigned() ? 'yes' : 'no');
+printf("Unsigned rumour created (kind %d)\n", $rumour->getKind()->toInt());
 
-$signedEvent = $unsignedEvent->sign($keyPair, $signatureService);
+$signedEvent = $rumour->sign($keyPair, $signatureService);
 
-printf("Event signed successfully\n");
-printf("Event ID: %s\n", $signedEvent->getId()->toHex());
-printf("Event is signed: %s\n\n", $signedEvent->isSigned() ? 'yes' : 'no');
+printf("Rumour signed into an event\n");
+printf("Event ID: %s\n\n", $signedEvent->getId()->toHex());
 
 printf("=== Signature Verification ===\n\n");
 

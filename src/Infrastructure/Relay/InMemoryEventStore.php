@@ -12,12 +12,14 @@ use Innis\Nostr\Core\Domain\Entity\Event;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\PublicKey;
 use Innis\Nostr\Relay\Application\Port\RelayEventStoreInterface;
 use Innis\Nostr\Relay\Domain\Enum\EventStoreOutcome;
+use Override;
 
 final class InMemoryEventStore implements RelayEventStoreInterface
 {
     /** @var array<string, Event> */
     private array $events = [];
 
+    #[Override]
     public function store(Event $event): EventStoreOutcome
     {
         $id = $event->getId()->toHex();
@@ -31,6 +33,7 @@ final class InMemoryEventStore implements RelayEventStoreInterface
         return EventStoreOutcome::Stored;
     }
 
+    #[Override]
     public function findByFilters(FilterCollection $filters, int $limit = 100): EventCollection
     {
         $matched = [];
@@ -51,11 +54,13 @@ final class InMemoryEventStore implements RelayEventStoreInterface
         return new EventCollection($matched);
     }
 
+    #[Override]
     public function countByFilters(FilterCollection $filters): int
     {
         return $this->findByFilters($filters, PHP_INT_MAX)->count();
     }
 
+    #[Override]
     public function deleteByEventIds(EventIdCollection $eventIds, PublicKey $author): int
     {
         $deleted = 0;
@@ -72,6 +77,7 @@ final class InMemoryEventStore implements RelayEventStoreInterface
         return $deleted;
     }
 
+    #[Override]
     public function deleteByCoordinates(EventCoordinateCollection $coordinates, PublicKey $author): int
     {
         $deleted = 0;
