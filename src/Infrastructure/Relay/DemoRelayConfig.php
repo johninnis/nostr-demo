@@ -13,10 +13,14 @@ use Override;
 
 final class DemoRelayConfig implements RelayConfigInterface
 {
+    private readonly RelayUrl $relayUrl;
+
     public function __construct(
         private readonly string $host = '127.0.0.1',
         private readonly int $port = 8080,
     ) {
+        $this->relayUrl = RelayUrl::tryFromString('ws://'.$host.':'.$port)
+            ?? throw new InvalidArgumentException(sprintf('Invalid relay URL: ws://%s:%d', $host, $port));
     }
 
     #[Override]
@@ -39,10 +43,7 @@ final class DemoRelayConfig implements RelayConfigInterface
 
     public function getRelayInfo(): Nip11Info
     {
-        $relayUrl = RelayUrl::tryFromString('ws://'.$this->host.':'.$this->port)
-            ?? throw new InvalidArgumentException('Invalid relay URL: ws://'.$this->host.':'.$this->port);
-
-        return Nip11Info::fromArray($relayUrl, [
+        return Nip11Info::fromArray($this->relayUrl, [
             'name' => 'Nostr Demo Relay',
             'description' => 'A local demo relay for testing',
             'supported_nips' => [1, 9, 11, 42, 50],
@@ -54,8 +55,7 @@ final class DemoRelayConfig implements RelayConfigInterface
     #[Override]
     public function getRelayUrl(): RelayUrl
     {
-        return RelayUrl::tryFromString('ws://'.$this->host.':'.$this->port)
-            ?? throw new InvalidArgumentException('Invalid relay URL: ws://'.$this->host.':'.$this->port);
+        return $this->relayUrl;
     }
 
     public function getRateLimitConfig(): RateLimitConfig

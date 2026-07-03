@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "innis/nostr-client": "@dev",
         "innis/nostr-core": "@dev",
         "innis/nostr-relay": "@dev"
@@ -24,7 +24,7 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.95",
         "innis/coding-standards": "@dev",
-        "phpstan/phpstan": "^2.1"
+        "phpstan/phpstan": "~2.2.2"
     },
     "scripts": {
         "test": [

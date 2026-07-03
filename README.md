@@ -6,7 +6,7 @@ Four standalone scripts demonstrate key generation, running a local relay with t
 
 ## Requirements
 
-- PHP 8.3 or higher
+- PHP 8.4 or higher
 
 ## Dependencies
 
@@ -14,7 +14,7 @@ Four standalone scripts demonstrate key generation, running a local relay with t
 | --- | --- |
 | [innis/nostr-core](https://github.com/johninnis/nostr-core) | `^0.3` |
 | [innis/nostr-client](https://github.com/johninnis/nostr-client) | `^0.1.7` |
-| [innis/nostr-relay](https://github.com/johninnis/nostr-relay) | `^0.1.12` |
+| [innis/nostr-relay](https://github.com/johninnis/nostr-relay) | `^0.2` |
 
 ## Install
 

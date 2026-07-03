@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 require __DIR__.'/../vendor/autoload.php';
 
-use Innis\Nostr\Client\Domain\Exception\ConnectionException;
 use Innis\Nostr\Client\Infrastructure\Factory\NostrClientFactory;
 use Innis\Nostr\Core\Application\Port\EventHandlerInterface;
 use Innis\Nostr\Core\Domain\Collection\EventKindCollection;
@@ -119,7 +118,7 @@ try {
 
     $client->disconnect($relayUrl);
     printf("Disconnected\n");
-} catch (ConnectionException $e) {
+} catch (Throwable $e) {
     fprintf(STDERR, "Error: %s\n", $e->getMessage());
     exit(1);
 }
