@@ -1,7 +1,6 @@
 /vendor/
 /var/
 .claude/
-composer.lock
 
 .phpunit.result.cache
 .phpunit.cache
