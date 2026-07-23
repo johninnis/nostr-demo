@@ -13,23 +13,36 @@ use Override;
 
 final class DemoRelayConfig implements RelayConfigInterface
 {
+    private readonly string $host;
+
     private readonly RelayUrl $relayUrl;
 
-    public function __construct(
-        private readonly string $host = '127.0.0.1',
-        private readonly int $port = 8080,
-    ) {
+    /** @var int<1, 65535> */
+    private readonly int $port;
+
+    public function __construct(string $host = '127.0.0.1', int $port = 8080)
+    {
+        if ($port < 1 || $port > 65535) {
+            throw new InvalidArgumentException(sprintf('Port out of range: %d (expected 1-65535)', $port));
+        }
+
+        $this->host = $host;
+        $this->port = $port;
         $this->relayUrl = RelayUrl::tryFromString('ws://'.$host.':'.$port)
             ?? throw new InvalidArgumentException(sprintf('Invalid relay URL: ws://%s:%d', $host, $port));
     }
 
-    #[Override]
+    /**
+     * The listening address is the host's business from nostr-relay 0.6 on -- it is configured on the
+     * HttpServer, not through RelayConfigInterface -- but the demo derives its relay URL from the same
+     * pair, so it keeps them here and hands them to the server it owns.
+     */
     public function getHost(): string
     {
         return $this->host;
     }
 
-    #[Override]
+    /** @return int<1, 65535> */
     public function getPort(): int
     {
         return $this->port;
@@ -64,11 +77,5 @@ final class DemoRelayConfig implements RelayConfigInterface
             eventsPerMinute: 600,
             subscriptionsPerMinute: 600,
         );
-    }
-
-    #[Override]
-    public function getTrustedProxies(): array
-    {
-        return [];
     }
 }

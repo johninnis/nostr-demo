@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 require __DIR__.'/../vendor/autoload.php';
 
+use Amp\Http\Server\DefaultErrorHandler;
+use Amp\Http\Server\SocketHttpServer;
+use Amp\Socket\InternetAddress;
 use App\Infrastructure\Relay\DemoRelayConfig;
-use App\Infrastructure\Relay\InMemoryEventStore;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\PublicKey;
 use Innis\Nostr\Core\Infrastructure\Crypto\NativeRandomBytesGenerator;
 use Innis\Nostr\Relay\Application\Service\InMemoryAuthenticationRegistry;
 use Innis\Nostr\Relay\Application\Service\RelayPolicy;
 use Innis\Nostr\Relay\Domain\ValueObject\RelayPolicyConfig;
+use Innis\Nostr\Relay\Infrastructure\EventStore\InMemoryEventStore;
 use Innis\Nostr\Relay\Infrastructure\Http\StaticNip11InfoProvider;
 use Innis\Nostr\Relay\Infrastructure\RateLimiting\StaticRateLimitPolicy;
 use Innis\Nostr\Relay\Infrastructure\Server\RelayServerFactory;
@@ -63,7 +66,13 @@ $factory = new RelayServerFactory(
     logger: $logger,
     nip11InfoProvider: new StaticNip11InfoProvider($config->getRelayInfo()),
 );
-$relay = $factory->create();
+
+// From nostr-relay 0.6 the host owns the HTTP server: it binds the address and drives the
+// lifecycle, and the relay is a request handler mounted on it.
+$httpServer = SocketHttpServer::createForDirectAccess($logger);
+$httpServer->expose(new InternetAddress($config->getHost(), $config->getPort()));
+
+$relay = $factory->create($httpServer);
 
 printf("Starting Nostr relay on ws://%s:%d\n", $host, $port);
 printf("Admin pubkey: %s\n", $adminPubkey->toHex());
@@ -71,9 +80,9 @@ printf("Tenants can submit any event, guests can read kind 0 and 1 from tenants\
 printf("Press Ctrl+C to stop\n\n");
 
 try {
-    $relay->start();
+    $httpServer->start($relay->getRequestHandler(), new DefaultErrorHandler());
     trapSignal([SIGINT, SIGTERM]);
-    $relay->stop();
+    $httpServer->stop();
 } catch (Throwable $e) {
     fprintf(STDERR, "Error: %s\n", $e->getMessage());
     exit(1);

@@ -12,9 +12,10 @@
     ],
     "require": {
         "php": "^8.4",
+        "amphp/http-server": "^3.0",
         "innis/nostr-client": "^0.5",
         "innis/nostr-core": "^0.5",
-        "innis/nostr-relay": "^0.5"
+        "innis/nostr-relay": "^0.6"
     },
     "autoload": {
         "psr-4": {

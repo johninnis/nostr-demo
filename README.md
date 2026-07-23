@@ -14,7 +14,12 @@ Four standalone scripts demonstrate key generation, running a local relay with t
 | --- | --- |
 | [innis/nostr-core](https://github.com/johninnis/nostr-core) | `^0.5` |
 | [innis/nostr-client](https://github.com/johninnis/nostr-client) | `^0.5` |
-| [innis/nostr-relay](https://github.com/johninnis/nostr-relay) | `^0.5` |
+| [innis/nostr-relay](https://github.com/johninnis/nostr-relay) | `^0.6` |
+| [amphp/http-server](https://github.com/amphp/http-server) | `^3.0` |
+
+From nostr-relay 0.6 the host owns the HTTP server, so `bin/start-relay.php` constructs the
+`SocketHttpServer`, binds it, and mounts the relay's request handler on it. The in-memory event
+store ships with the library from 0.6.2, so the demo no longer carries its own.
 
 ## Install
 
@@ -91,11 +96,12 @@ src/
     Client/
       EventCollector.php
     Relay/
-      InMemoryEventStore.php
       DemoRelayConfig.php
 ```
 
-The relay policy now comes from the library (`RelayPolicy`), so no local policy classes are needed.
+The relay policy and the event store both come from the library now (`RelayPolicy` and
+`InMemoryEventStore`), so the demo keeps only its own relay configuration and the client-side
+event collector.
 
 ## Licence
 
