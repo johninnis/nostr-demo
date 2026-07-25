@@ -11,3 +11,6 @@
 /.idea
 
 .#*
+/phpstan.neon
+/.php-cs-fixer.php
+/rector.php
