@@ -13,8 +13,8 @@
     "require": {
         "php": "^8.4",
         "amphp/http-server": "^3.0",
-        "innis/nostr-client": "^0.5",
-        "innis/nostr-core": "^0.5",
+        "innis/nostr-client": "^0.6",
+        "innis/nostr-core": "^0.6",
         "innis/nostr-relay": "^0.6"
     },
     "autoload": {
@@ -23,10 +23,11 @@
         }
     },
     "require-dev": {
+        "ext-ffi": "*",
         "friendsofphp/php-cs-fixer": "^3.95",
         "innis/coding-standards": "^0.1",
-        "phpstan/phpstan": "~2.2.2",
-        "rector/rector": "~2.4.6"
+        "phpstan/phpstan": "~2.2.6",
+        "rector/rector": "~2.5.9"
     },
     "scripts": {
         "test": [

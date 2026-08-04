@@ -37,7 +37,12 @@ if (null === $adminPubkey) {
     exit(1);
 }
 
-$config = new DemoRelayConfig($host, $port);
+$config = DemoRelayConfig::tryFrom($host, $port);
+if (null === $config) {
+    fprintf(STDERR, "Invalid relay host or port: %s:%d\n", $host, $port);
+    exit(1);
+}
+
 $eventStore = new InMemoryEventStore();
 $authenticationRegistry = new InMemoryAuthenticationRegistry(new NativeRandomBytesGenerator());
 $logger = new NullLogger();
@@ -74,13 +79,14 @@ $httpServer->expose(new InternetAddress($config->getHost(), $config->getPort()))
 
 $relay = $factory->create($httpServer);
 
-printf("Starting Nostr relay on ws://%s:%d\n", $host, $port);
-printf("Admin pubkey: %s\n", $adminPubkey->toHex());
-printf("Tenants can submit any event, guests can read kind 0 and 1 from tenants\n");
-printf("Press Ctrl+C to stop\n\n");
-
 try {
     $httpServer->start($relay->getRequestHandler(), new DefaultErrorHandler());
+
+    printf("Starting Nostr relay on ws://%s:%d\n", $host, $port);
+    printf("Admin pubkey: %s\n", $adminPubkey->toHex());
+    printf("Tenants can submit any event, guests can read kind 0 and 1 from tenants\n");
+    printf("Press Ctrl+C to stop\n\n");
+
     trapSignal([SIGINT, SIGTERM]);
     $httpServer->stop();
 } catch (Throwable $e) {

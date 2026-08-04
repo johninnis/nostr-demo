@@ -8,28 +8,27 @@ use Innis\Nostr\Core\Domain\ValueObject\Protocol\Nip11Info;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\RelayUrl;
 use Innis\Nostr\Relay\Application\Port\RelayConfigInterface;
 use Innis\Nostr\Relay\Domain\ValueObject\RateLimitConfig;
-use InvalidArgumentException;
 use Override;
 
 final class DemoRelayConfig implements RelayConfigInterface
 {
-    private readonly string $host;
+    /** @param int<1, 65535> $port */
+    private function __construct(
+        private readonly string $host,
+        private readonly int $port,
+        private readonly RelayUrl $relayUrl,
+    ) {
+    }
 
-    private readonly RelayUrl $relayUrl;
-
-    /** @var int<1, 65535> */
-    private readonly int $port;
-
-    public function __construct(string $host = '127.0.0.1', int $port = 8080)
+    public static function tryFrom(string $host = '127.0.0.1', int $port = 8080): ?self
     {
         if ($port < 1 || $port > 65535) {
-            throw new InvalidArgumentException(sprintf('Port out of range: %d (expected 1-65535)', $port));
+            return null;
         }
 
-        $this->host = $host;
-        $this->port = $port;
-        $this->relayUrl = RelayUrl::tryFromString('ws://'.$host.':'.$port)
-            ?? throw new InvalidArgumentException(sprintf('Invalid relay URL: ws://%s:%d', $host, $port));
+        $relayUrl = RelayUrl::tryFromString('ws://'.$host.':'.$port);
+
+        return null === $relayUrl ? null : new self($host, $port, $relayUrl);
     }
 
     /**

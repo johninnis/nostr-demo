@@ -1,5 +1,7 @@
 # Nostr Demo
 
+[![CI](https://github.com/johninnis/nostr-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/johninnis/nostr-demo/actions/workflows/ci.yml)
+
 Demo project showcasing [nostr-core](https://github.com/johninnis/nostr-core), [nostr-client](https://github.com/johninnis/nostr-client), and [nostr-relay](https://github.com/johninnis/nostr-relay) working together.
 
 Four standalone scripts demonstrate key generation, running a local relay with tenant-based access control, publishing events with NIP-42 authentication, and reading events as a guest.
@@ -12,8 +14,8 @@ Four standalone scripts demonstrate key generation, running a local relay with t
 
 | Package | Version |
 | --- | --- |
-| [innis/nostr-core](https://github.com/johninnis/nostr-core) | `^0.5` |
-| [innis/nostr-client](https://github.com/johninnis/nostr-client) | `^0.5` |
+| [innis/nostr-core](https://github.com/johninnis/nostr-core) | `^0.6` |
+| [innis/nostr-client](https://github.com/johninnis/nostr-client) | `^0.6` |
 | [innis/nostr-relay](https://github.com/johninnis/nostr-relay) | `^0.6` |
 | [amphp/http-server](https://github.com/amphp/http-server) | `^3.0` |
 
