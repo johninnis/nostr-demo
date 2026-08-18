@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "276ee4485435bae5ba478ac31d7e86c0",
+    "content-hash": "22552249b35a071cfc19145fe6f9e32e",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1449,22 +1449,22 @@
         },
         {
             "name": "innis/nostr-client",
-            "version": "v0.6.0",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johninnis/nostr-client.git",
-                "reference": "43786ed74a8b419b1d1874ed4239c52159a2ad8e"
+                "reference": "3922ca03f45e32111dc1072fda8c36d3c5d5d8b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johninnis/nostr-client/zipball/43786ed74a8b419b1d1874ed4239c52159a2ad8e",
-                "reference": "43786ed74a8b419b1d1874ed4239c52159a2ad8e",
+                "url": "https://api.github.com/repos/johninnis/nostr-client/zipball/3922ca03f45e32111dc1072fda8c36d3c5d5d8b2",
+                "reference": "3922ca03f45e32111dc1072fda8c36d3c5d5d8b2",
                 "shasum": ""
             },
             "require": {
                 "amphp/amp": "^3.0",
                 "amphp/websocket-client": "^2.0",
-                "innis/nostr-core": "^0.6",
+                "innis/nostr-core": "^0.7",
                 "php": "^8.4",
                 "psr/log": "^3.0"
             },
@@ -1472,7 +1472,7 @@
                 "ext-ffi": "*",
                 "friendsofphp/php-cs-fixer": "^3.95",
                 "innis/coding-standards": "^0.1",
-                "innis/nostr-relay": "^0.6",
+                "innis/nostr-relay": "^0.7",
                 "phpstan/phpstan": "~2.2.6",
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpunit/phpunit": "^13.1",
@@ -1506,22 +1506,22 @@
             ],
             "support": {
                 "issues": "https://github.com/johninnis/nostr-client/issues",
-                "source": "https://github.com/johninnis/nostr-client/tree/v0.6.0"
+                "source": "https://github.com/johninnis/nostr-client/tree/v0.7.0"
             },
-            "time": "2026-08-04T10:40:55+00:00"
+            "time": "2026-08-18T09:00:51+00:00"
         },
         {
             "name": "innis/nostr-core",
-            "version": "v0.6.0",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johninnis/nostr-core.git",
-                "reference": "cf862c5d2433bb4c0948a136b12710e800fdd846"
+                "reference": "3550ba9cedd15098145999db43e33d61847d646e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johninnis/nostr-core/zipball/cf862c5d2433bb4c0948a136b12710e800fdd846",
-                "reference": "cf862c5d2433bb4c0948a136b12710e800fdd846",
+                "url": "https://api.github.com/repos/johninnis/nostr-core/zipball/3550ba9cedd15098145999db43e33d61847d646e",
+                "reference": "3550ba9cedd15098145999db43e33d61847d646e",
                 "shasum": ""
             },
             "require": {
@@ -1571,29 +1571,29 @@
             ],
             "support": {
                 "issues": "https://github.com/johninnis/nostr-core/issues",
-                "source": "https://github.com/johninnis/nostr-core/tree/v0.6.0"
+                "source": "https://github.com/johninnis/nostr-core/tree/v0.7.0"
             },
-            "time": "2026-08-04T09:02:21+00:00"
+            "time": "2026-08-18T07:05:18+00:00"
         },
         {
             "name": "innis/nostr-relay",
-            "version": "v0.6.3",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johninnis/nostr-relay.git",
-                "reference": "2a5a6dee4f87c03c643d88b7a74357d23fff886e"
+                "reference": "f76ead9cb9bf291f238992223f848bde9863f1cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johninnis/nostr-relay/zipball/2a5a6dee4f87c03c643d88b7a74357d23fff886e",
-                "reference": "2a5a6dee4f87c03c643d88b7a74357d23fff886e",
+                "url": "https://api.github.com/repos/johninnis/nostr-relay/zipball/f76ead9cb9bf291f238992223f848bde9863f1cf",
+                "reference": "f76ead9cb9bf291f238992223f848bde9863f1cf",
                 "shasum": ""
             },
             "require": {
                 "amphp/amp": "^3.0",
                 "amphp/http-server": "^3.0",
                 "amphp/websocket-server": "^4.0",
-                "innis/nostr-core": "^0.6",
+                "innis/nostr-core": "^0.7",
                 "php": "^8.4",
                 "psr/log": "^3.0"
             },
@@ -1635,9 +1635,9 @@
             ],
             "support": {
                 "issues": "https://github.com/johninnis/nostr-relay/issues",
-                "source": "https://github.com/johninnis/nostr-relay/tree/v0.6.3"
+                "source": "https://github.com/johninnis/nostr-relay/tree/v0.7.0"
             },
-            "time": "2026-08-04T10:19:16+00:00"
+            "time": "2026-08-18T08:54:08+00:00"
         },
         {
             "name": "kelunik/certificate",
@@ -2843,16 +2843,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.95.18",
+            "version": "v3.95.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "a8b4e4216faabf67f4e96110ee99a48c96e4e683"
+                "reference": "8a06c4ad6bd580b7920bd5ff81b271ca1158507e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/a8b4e4216faabf67f4e96110ee99a48c96e4e683",
-                "reference": "a8b4e4216faabf67f4e96110ee99a48c96e4e683",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/8a06c4ad6bd580b7920bd5ff81b271ca1158507e",
+                "reference": "8a06c4ad6bd580b7920bd5ff81b271ca1158507e",
                 "shasum": ""
             },
             "require": {
@@ -2936,7 +2936,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.95.18"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.95.19"
             },
             "funding": [
                 {
@@ -2944,7 +2944,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-30T15:46:02+00:00"
+            "time": "2026-08-17T16:24:07+00:00"
         },
         {
             "name": "innis/coding-standards",
@@ -3064,11 +3064,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.7",
+            "version": "2.2.8",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/692db47b9dddb0487934e5236e77d48594aef921",
-                "reference": "692db47b9dddb0487934e5236e77d48594aef921",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e285254e60f33c21902efef4a926ca0987c06804",
+                "reference": "e285254e60f33c21902efef4a926ca0987c06804",
                 "shasum": ""
             },
             "require": {
@@ -3124,7 +3124,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-29T17:39:32+00:00"
+            "time": "2026-08-04T22:21:45+00:00"
         },
         {
             "name": "psr/container",
@@ -3896,16 +3896,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v8.1.2",
+            "version": "v8.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "535e18a1b8925f6c01a55b171d157ab66c2ace15"
+                "reference": "68efa2ebfd9a362951eb5a8b09fd177c66ddec24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/535e18a1b8925f6c01a55b171d157ab66c2ace15",
-                "reference": "535e18a1b8925f6c01a55b171d157ab66c2ace15",
+                "url": "https://api.github.com/repos/symfony/console/zipball/68efa2ebfd9a362951eb5a8b09fd177c66ddec24",
+                "reference": "68efa2ebfd9a362951eb5a8b09fd177c66ddec24",
                 "shasum": ""
             },
             "require": {
@@ -3972,7 +3972,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v8.1.2"
+                "source": "https://github.com/symfony/console/tree/v8.1.4"
             },
             "funding": [
                 {
@@ -3992,7 +3992,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-27T13:58:19+00:00"
+            "time": "2026-07-31T12:43:13+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
