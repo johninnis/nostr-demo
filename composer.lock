@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22552249b35a071cfc19145fe6f9e32e",
+    "content-hash": "65b220bfe39a0feb4ba3414a245bbf1e",
     "packages": [
         {
             "name": "amphp/amp",
@@ -229,16 +229,16 @@
         },
         {
             "name": "amphp/dns",
-            "version": "v2.4.0",
+            "version": "v2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/dns.git",
-                "reference": "78eb3db5fc69bf2fc0cb503c4fcba667bc223c71"
+                "reference": "ec5948bfafac808f410406e18bc7b52a2d4629b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/dns/zipball/78eb3db5fc69bf2fc0cb503c4fcba667bc223c71",
-                "reference": "78eb3db5fc69bf2fc0cb503c4fcba667bc223c71",
+                "url": "https://api.github.com/repos/amphp/dns/zipball/ec5948bfafac808f410406e18bc7b52a2d4629b7",
+                "reference": "ec5948bfafac808f410406e18bc7b52a2d4629b7",
                 "shasum": ""
             },
             "require": {
@@ -257,7 +257,7 @@
                 "amphp/php-cs-fixer-config": "^2",
                 "amphp/phpunit-util": "^3",
                 "phpunit/phpunit": "^9",
-                "psalm/phar": "5.20"
+                "psalm/phar": "6.16.1"
             },
             "type": "library",
             "autoload": {
@@ -306,7 +306,7 @@
             ],
             "support": {
                 "issues": "https://github.com/amphp/dns/issues",
-                "source": "https://github.com/amphp/dns/tree/v2.4.0"
+                "source": "https://github.com/amphp/dns/tree/v2.4.1"
             },
             "funding": [
                 {
@@ -314,7 +314,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-19T15:43:40+00:00"
+            "time": "2026-07-26T17:53:54+00:00"
         },
         {
             "name": "amphp/hpack",
@@ -914,16 +914,16 @@
         },
         {
             "name": "amphp/socket",
-            "version": "v2.4.0",
+            "version": "v2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/socket.git",
-                "reference": "dadb63c5d3179fd83803e29dfeac27350e619314"
+                "reference": "b347be5aff6b2cc025208bb4d896607eb470c018"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/socket/zipball/dadb63c5d3179fd83803e29dfeac27350e619314",
-                "reference": "dadb63c5d3179fd83803e29dfeac27350e619314",
+                "url": "https://api.github.com/repos/amphp/socket/zipball/b347be5aff6b2cc025208bb4d896607eb470c018",
+                "reference": "b347be5aff6b2cc025208bb4d896607eb470c018",
                 "shasum": ""
             },
             "require": {
@@ -986,7 +986,7 @@
             ],
             "support": {
                 "issues": "https://github.com/amphp/socket/issues",
-                "source": "https://github.com/amphp/socket/tree/v2.4.0"
+                "source": "https://github.com/amphp/socket/tree/v2.4.1"
             },
             "funding": [
                 {
@@ -994,7 +994,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-19T15:09:56+00:00"
+            "time": "2026-08-22T18:13:20+00:00"
         },
         {
             "name": "amphp/sync",
@@ -1449,22 +1449,22 @@
         },
         {
             "name": "innis/nostr-client",
-            "version": "v0.7.0",
+            "version": "v0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johninnis/nostr-client.git",
-                "reference": "3922ca03f45e32111dc1072fda8c36d3c5d5d8b2"
+                "reference": "3596dd6c830d9198a206dfd7931e874f836741b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johninnis/nostr-client/zipball/3922ca03f45e32111dc1072fda8c36d3c5d5d8b2",
-                "reference": "3922ca03f45e32111dc1072fda8c36d3c5d5d8b2",
+                "url": "https://api.github.com/repos/johninnis/nostr-client/zipball/3596dd6c830d9198a206dfd7931e874f836741b4",
+                "reference": "3596dd6c830d9198a206dfd7931e874f836741b4",
                 "shasum": ""
             },
             "require": {
                 "amphp/amp": "^3.0",
                 "amphp/websocket-client": "^2.0",
-                "innis/nostr-core": "^0.7",
+                "innis/nostr-core": "^0.8",
                 "php": "^8.4",
                 "psr/log": "^3.0"
             },
@@ -1472,7 +1472,7 @@
                 "ext-ffi": "*",
                 "friendsofphp/php-cs-fixer": "^3.95",
                 "innis/coding-standards": "^0.1",
-                "innis/nostr-relay": "^0.7",
+                "innis/nostr-relay": "^0.9",
                 "phpstan/phpstan": "~2.2.6",
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpunit/phpunit": "^13.1",
@@ -1506,31 +1506,32 @@
             ],
             "support": {
                 "issues": "https://github.com/johninnis/nostr-client/issues",
-                "source": "https://github.com/johninnis/nostr-client/tree/v0.7.0"
+                "source": "https://github.com/johninnis/nostr-client/tree/v0.8.0"
             },
-            "time": "2026-08-18T09:00:51+00:00"
+            "time": "2026-09-23T11:58:51+00:00"
         },
         {
             "name": "innis/nostr-core",
-            "version": "v0.7.0",
+            "version": "v0.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johninnis/nostr-core.git",
-                "reference": "3550ba9cedd15098145999db43e33d61847d646e"
+                "reference": "46cc13c35a9d26f40c44f113b4b8d1bc5e5a7de5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johninnis/nostr-core/zipball/3550ba9cedd15098145999db43e33d61847d646e",
-                "reference": "3550ba9cedd15098145999db43e33d61847d646e",
+                "url": "https://api.github.com/repos/johninnis/nostr-core/zipball/46cc13c35a9d26f40c44f113b4b8d1bc5e5a7de5",
+                "reference": "46cc13c35a9d26f40c44f113b4b8d1bc5e5a7de5",
                 "shasum": ""
             },
             "require": {
                 "ext-gmp": "*",
                 "ext-intl": "*",
                 "ext-mbstring": "*",
+                "ext-openssl": "*",
                 "ext-sodium": "*",
                 "paragonie/ecc": "^2.5",
-                "paragonie/sodium_compat": "^2.1",
+                "paragonie/sodium_compat": "^2.5.1",
                 "php": "^8.4"
             },
             "require-dev": {
@@ -1571,29 +1572,29 @@
             ],
             "support": {
                 "issues": "https://github.com/johninnis/nostr-core/issues",
-                "source": "https://github.com/johninnis/nostr-core/tree/v0.7.0"
+                "source": "https://github.com/johninnis/nostr-core/tree/v0.8.1"
             },
-            "time": "2026-08-18T07:05:18+00:00"
+            "time": "2026-09-23T11:44:09+00:00"
         },
         {
             "name": "innis/nostr-relay",
-            "version": "v0.7.0",
+            "version": "v0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johninnis/nostr-relay.git",
-                "reference": "f76ead9cb9bf291f238992223f848bde9863f1cf"
+                "reference": "893f65a5460847eef761cbff5de9767ceed84f40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johninnis/nostr-relay/zipball/f76ead9cb9bf291f238992223f848bde9863f1cf",
-                "reference": "f76ead9cb9bf291f238992223f848bde9863f1cf",
+                "url": "https://api.github.com/repos/johninnis/nostr-relay/zipball/893f65a5460847eef761cbff5de9767ceed84f40",
+                "reference": "893f65a5460847eef761cbff5de9767ceed84f40",
                 "shasum": ""
             },
             "require": {
                 "amphp/amp": "^3.0",
                 "amphp/http-server": "^3.0",
                 "amphp/websocket-server": "^4.0",
-                "innis/nostr-core": "^0.7",
+                "innis/nostr-core": "^0.8",
                 "php": "^8.4",
                 "psr/log": "^3.0"
             },
@@ -1635,9 +1636,9 @@
             ],
             "support": {
                 "issues": "https://github.com/johninnis/nostr-relay/issues",
-                "source": "https://github.com/johninnis/nostr-relay/tree/v0.7.0"
+                "source": "https://github.com/johninnis/nostr-relay/tree/v0.9.0"
             },
-            "time": "2026-08-18T08:54:08+00:00"
+            "time": "2026-09-23T11:53:18+00:00"
         },
         {
             "name": "kelunik/certificate",
@@ -1965,16 +1966,16 @@
         },
         {
             "name": "paragonie/ecc",
-            "version": "v2.5.0",
+            "version": "v2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/phpecc.git",
-                "reference": "d25bd2aab9b1205db1cf3aa3e83531d4549377bf"
+                "reference": "1a49380410b8ce826bc7fd3de6324053e049205c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/phpecc/zipball/d25bd2aab9b1205db1cf3aa3e83531d4549377bf",
-                "reference": "d25bd2aab9b1205db1cf3aa3e83531d4549377bf",
+                "url": "https://api.github.com/repos/paragonie/phpecc/zipball/1a49380410b8ce826bc7fd3de6324053e049205c",
+                "reference": "1a49380410b8ce826bc7fd3de6324053e049205c",
                 "shasum": ""
             },
             "require": {
@@ -2049,22 +2050,22 @@
             ],
             "support": {
                 "issues": "https://github.com/paragonie/phpecc/issues",
-                "source": "https://github.com/paragonie/phpecc/tree/v2.5.0"
+                "source": "https://github.com/paragonie/phpecc/tree/v2.6.0"
             },
-            "time": "2025-07-19T01:25:49+00:00"
+            "time": "2026-08-20T07:00:03+00:00"
         },
         {
             "name": "paragonie/sodium_compat",
-            "version": "v2.5.0",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/sodium_compat.git",
-                "reference": "4714da6efdc782c06690bc72ce34fae7941c2d9f"
+                "reference": "3246b36803c177847e677862fedeb7f937869adb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/4714da6efdc782c06690bc72ce34fae7941c2d9f",
-                "reference": "4714da6efdc782c06690bc72ce34fae7941c2d9f",
+                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/3246b36803c177847e677862fedeb7f937869adb",
+                "reference": "3246b36803c177847e677862fedeb7f937869adb",
                 "shasum": ""
             },
             "require": {
@@ -2145,9 +2146,9 @@
             ],
             "support": {
                 "issues": "https://github.com/paragonie/sodium_compat/issues",
-                "source": "https://github.com/paragonie/sodium_compat/tree/v2.5.0"
+                "source": "https://github.com/paragonie/sodium_compat/tree/v2.5.2"
             },
-            "time": "2025-12-30T16:12:18+00:00"
+            "time": "2026-08-18T23:46:48+00:00"
         },
         {
             "name": "psr/http-factory",

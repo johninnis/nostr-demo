@@ -15,8 +15,10 @@ use Innis\Nostr\Core\Domain\Service\SignatureServiceInterface;
 use Innis\Nostr\Core\Domain\ValueObject\Content\EventKind;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\KeyPair;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\PrivateKey;
+use Innis\Nostr\Core\Domain\ValueObject\Protocol\Challenge;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\Filter;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\RelayUrl;
+use Innis\Nostr\Core\Domain\ValueObject\Tag\Hashtag;
 use Innis\Nostr\Core\Domain\ValueObject\Tag\Tag;
 use Innis\Nostr\Core\Domain\ValueObject\Tag\TagType;
 use Innis\Nostr\Core\Infrastructure\Crypto\Secp256k1Signer;
@@ -63,7 +65,7 @@ $authHandler = new class($adminKeyPair, $relayUrl, $signatureService) implements
     }
 
     #[Override]
-    public function handleAuthChallenge(RelayUrl $relayUrl, string $challenge): Event
+    public function handleAuthChallenge(RelayUrl $relayUrl, Challenge $challenge): Event
     {
         printf("  [AUTH] Challenge received, responding...\n");
 
@@ -94,8 +96,8 @@ try {
         $adminPubkey,
         'Nostr is a decentralised protocol for social networking.',
         new TagCollection([
-            Tag::hashtag('nostr'),
-            Tag::hashtag('decentralised'),
+            Tag::hashtag(Hashtag::fromString('nostr')),
+            Tag::hashtag(Hashtag::fromString('decentralised')),
         ]),
     )->sign($adminKeyPair, $signatureService);
     $result = $client->publishEvent($relayUrl, $adminSearchNote)->await();
@@ -114,7 +116,7 @@ try {
         $guestKeyPair->getPublicKey(),
         'Hello from a guest user on the Nostr relay.',
         new TagCollection([
-            Tag::hashtag('nostr'),
+            Tag::hashtag(Hashtag::fromString('nostr')),
         ]),
     )->sign($guestKeyPair, $signatureService);
     $result = $client->publishEvent($relayUrl, $guestNote)->await();
