@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require __DIR__.'/../vendor/autoload.php';
 
+use Innis\Nostr\Client\Domain\ValueObject\SubscriptionRequest;
 use Innis\Nostr\Client\Infrastructure\Factory\NostrClientFactory;
 use Innis\Nostr\Core\Application\Port\EventHandlerInterface;
 use Innis\Nostr\Core\Domain\Collection\EventKindCollection;
@@ -16,6 +17,7 @@ use Innis\Nostr\Core\Domain\ValueObject\Identity\PublicKey;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\Filter;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\RelayUrl;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\SubscriptionId;
+use Innis\Nostr\Core\Domain\ValueObject\Timestamp;
 use Innis\Nostr\Core\Infrastructure\Crypto\Secp256k1Signer;
 use Psr\Log\NullLogger;
 
@@ -49,7 +51,11 @@ $client = NostrClientFactory::create(new NullLogger());
 
 try {
     printf("Connecting to %s...\n", (string) $relayUrl);
-    $client->connect($relayUrl);
+    $connected = $client->connect($relayUrl);
+    if (!$connected->isConnected()) {
+        fprintf(STDERR, "Error: %s: %s\n", (string) $relayUrl, $connected->getMessage());
+        exit(1);
+    }
     printf("Connected\n\n");
 
     if (null !== $authorKey) {
@@ -60,7 +66,7 @@ try {
     }
     printf("\n");
 
-    $filter = new Filter(
+    $filter = Filter::from(
         authors: null !== $authorKey ? new PublicKeyCollection([$authorKey]) : null,
         kinds: EventKindCollection::fromInts([EventKind::TEXT_NOTE]),
         limit: 50,
@@ -85,7 +91,7 @@ try {
             printf("  Kind:    %d\n", $event->getKind()->toInt());
             printf("  Created: %s\n", $event->getCreatedAt()->toDateTime()->format('Y-m-d H:i:s'));
             printf("  Content: %s\n", (string) $event->getContent());
-            printf("  Valid:   %s\n\n", $this->validationService->isEventValid($event) ? 'yes' : 'no');
+            printf("  Valid:   %s\n\n", $this->validationService->isEventValid($event, Timestamp::now()) ? 'yes' : 'no');
         }
 
         #[Override]
@@ -107,7 +113,7 @@ try {
         }
     };
 
-    $subscriptionId = $client->subscribe($relayUrl, $filter, $handler);
+    $subscriptionId = $client->subscribe(SubscriptionRequest::for($relayUrl, $filter), $handler);
     printf("Subscribed (id: %s)\n", (string) $subscriptionId);
     printf("Listening for 30 seconds...\n\n");
 

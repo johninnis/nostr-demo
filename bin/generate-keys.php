@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 require __DIR__.'/../vendor/autoload.php';
 
-use Innis\Nostr\Core\Domain\Factory\RumourFactory;
 use Innis\Nostr\Core\Domain\Service\EventValidator;
 use Innis\Nostr\Core\Domain\Service\NipComplianceValidator;
+use Innis\Nostr\Core\Domain\ValueObject\Content\EventContent;
+use Innis\Nostr\Core\Domain\ValueObject\Content\EventKind;
 use Innis\Nostr\Core\Domain\ValueObject\Identity\KeyPair;
+use Innis\Nostr\Core\Domain\ValueObject\Protocol\Rumour;
+use Innis\Nostr\Core\Domain\ValueObject\Timestamp;
 use Innis\Nostr\Core\Infrastructure\Crypto\Secp256k1Signer;
 
 try {
@@ -26,7 +29,7 @@ try {
 
     printf("=== Event Creation and Signing ===\n\n");
 
-    $rumour = RumourFactory::createTextNote($publicKey, 'Hello from nostr-demo! This is a signed text note.');
+    $rumour = Rumour::draft($publicKey, EventKind::fromInt(EventKind::TEXT_NOTE), EventContent::fromString('Hello from nostr-demo! This is a signed text note.'));
 
     printf("Unsigned rumour created (kind %d)\n", $rumour->getKind()->toInt());
 
@@ -43,7 +46,7 @@ try {
     printf("=== Full Event Validation ===\n\n");
 
     $validationService = new EventValidator($signatureService, new NipComplianceValidator($signatureService));
-    $validationService->validateEvent($signedEvent);
+    $validationService->validateEvent($signedEvent, Timestamp::now());
     printf("Event passed full validation (timestamp, content, tags, signature)\n\n");
 
     printf("=== Event JSON ===\n\n");

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Relay;
 
+use Innis\Nostr\Core\Domain\ValueObject\EventLimits;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\Nip11Info;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\RelayUrl;
 use Innis\Nostr\Relay\Application\Port\RelayConfigInterface;
@@ -68,6 +69,12 @@ final class DemoRelayConfig implements RelayConfigInterface
     public function getRelayUrl(): RelayUrl
     {
         return $this->relayUrl;
+    }
+
+    #[Override]
+    public function getEventLimits(): EventLimits
+    {
+        return new EventLimits();
     }
 
     public function getRateLimitConfig(): RateLimitConfig

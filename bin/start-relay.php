@@ -66,11 +66,11 @@ $factory = new RelayServerFactory(
     eventStore: $eventStore,
     policy: $policy,
     config: $config,
-    rateLimitPolicy: new StaticRateLimitPolicy($config->getRateLimitConfig()),
-    authenticationRegistry: $authenticationRegistry,
-    logger: $logger,
-    nip11InfoProvider: new StaticNip11InfoProvider($config->getRelayInfo()),
-);
+)
+    ->withRateLimitPolicy(new StaticRateLimitPolicy($config->getRateLimitConfig()))
+    ->withAuthenticationRegistry($authenticationRegistry)
+    ->withNip11InfoProvider(new StaticNip11InfoProvider($config->getRelayInfo()))
+    ->withLogger($logger);
 
 // From nostr-relay 0.6 the host owns the HTTP server: it binds the address and drives the
 // lifecycle, and the relay is a request handler mounted on it.
