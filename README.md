@@ -9,17 +9,20 @@ Four standalone scripts demonstrate key generation, running a local relay with t
 ## Requirements
 
 - PHP 8.4 or higher
+- The `ctype`, `filter`, `gmp`, `intl`, `mbstring`, `openssl` and `sodium` extensions, which nostr-core and the amphp packages require
+- The `pcntl` extension, which `bin/start-relay.php` uses to stop on Ctrl+C (`SIGINT`) or `SIGTERM`
+- The `ffi` extension, which `composer.json` declares among its development requirements, so `composer install` needs it unless run with `--no-dev`. With the native `libsecp256k1` library installed, nostr-core signs and verifies through it; without it, nostr-core falls back to a slower pure-PHP path that is not constant-time
 
 ## Dependencies
 
 | Package | Version |
 | --- | --- |
-| [innis/nostr-core](https://github.com/johninnis/nostr-core) | `^0.6` |
-| [innis/nostr-client](https://github.com/johninnis/nostr-client) | `^0.6` |
-| [innis/nostr-relay](https://github.com/johninnis/nostr-relay) | `^0.6` |
+| [innis/nostr-core](https://github.com/johninnis/nostr-core) | `^0.10` |
+| [innis/nostr-client](https://github.com/johninnis/nostr-client) | `^0.10` |
+| [innis/nostr-relay](https://github.com/johninnis/nostr-relay) | `^0.12` |
 | [amphp/http-server](https://github.com/amphp/http-server) | `^3.0` |
 
-From nostr-relay 0.6 the host owns the HTTP server, so `bin/start-relay.php` constructs the `SocketHttpServer`, binds it, and mounts the relay's request handler on it. The in-memory event store ships with the library from 0.6.2, so the demo no longer carries its own.
+nostr-relay leaves the HTTP server to its host, so `bin/start-relay.php` constructs the `SocketHttpServer`, exposes it on the relay's listening address, and mounts the relay's request handler on it. The in-memory event store ships with the library, so the demo carries none of its own.
 
 ## Install
 
@@ -99,7 +102,7 @@ src/
       DemoRelayConfig.php
 ```
 
-The relay policy and the event store both come from the library now (`RelayPolicy` and `InMemoryEventStore`), so the demo keeps only its own relay configuration and the client-side event collector.
+The relay policy and the event store both come from the library (`RelayPolicy` and `InMemoryEventStore`), so the demo keeps only its own relay configuration and the client-side event collector.
 
 ## Licence
 

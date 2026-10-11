@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Relay;
 
+use Amp\Socket\InternetAddress;
 use Innis\Nostr\Core\Domain\ValueObject\EventLimits;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\Nip11Info;
 use Innis\Nostr\Core\Domain\ValueObject\Protocol\RelayUrl;
@@ -11,41 +12,33 @@ use Innis\Nostr\Relay\Application\Port\RelayConfigInterface;
 use Innis\Nostr\Relay\Domain\ValueObject\RateLimitConfig;
 use Override;
 
-final class DemoRelayConfig implements RelayConfigInterface
+final readonly class DemoRelayConfig implements RelayConfigInterface
 {
-    /** @param int<1, 65535> $port */
     private function __construct(
-        private readonly string $host,
-        private readonly int $port,
-        private readonly RelayUrl $relayUrl,
+        private InternetAddress $listeningAddress,
+        private RelayUrl $relayUrl,
     ) {
     }
 
     public static function tryFrom(string $host = '127.0.0.1', int $port = 8080): ?self
     {
-        if ($port < 1 || $port > 65535) {
+        if ($port < 1) {
             return null;
         }
 
-        $relayUrl = RelayUrl::tryFromString('ws://'.$host.':'.$port);
+        $listeningAddress = InternetAddress::tryFromString($host.':'.$port);
+        if (null === $listeningAddress) {
+            return null;
+        }
 
-        return null === $relayUrl ? null : new self($host, $port, $relayUrl);
+        $relayUrl = RelayUrl::tryFromString('ws://'.$listeningAddress->toString());
+
+        return null === $relayUrl ? null : new self($listeningAddress, $relayUrl);
     }
 
-    /**
-     * The listening address is the host's business from nostr-relay 0.6 on -- it is configured on the
-     * HttpServer, not through RelayConfigInterface -- but the demo derives its relay URL from the same
-     * pair, so it keeps them here and hands them to the server it owns.
-     */
-    public function getHost(): string
+    public function getListeningAddress(): InternetAddress
     {
-        return $this->host;
-    }
-
-    /** @return int<1, 65535> */
-    public function getPort(): int
-    {
-        return $this->port;
+        return $this->listeningAddress;
     }
 
     #[Override]
@@ -59,8 +52,8 @@ final class DemoRelayConfig implements RelayConfigInterface
         return Nip11Info::fromArray($this->relayUrl, [
             'name' => 'Nostr Demo Relay',
             'description' => 'A local demo relay for testing',
-            'supported_nips' => [1, 9, 11, 42, 50],
-            'software' => 'innis/nostr-relay',
+            'supported_nips' => [1, 9, 11, 17, 40, 42, 45, 50, 59, 67, 70],
+            'software' => 'https://github.com/johninnis/nostr-relay',
             'version' => 'dev',
         ]);
     }
