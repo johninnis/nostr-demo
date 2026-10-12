@@ -19,7 +19,7 @@ Four standalone scripts demonstrate key generation, running a local relay with t
 | --- | --- |
 | [innis/nostr-core](https://github.com/johninnis/nostr-core) | `^0.10` |
 | [innis/nostr-client](https://github.com/johninnis/nostr-client) | `^0.10` |
-| [innis/nostr-relay](https://github.com/johninnis/nostr-relay) | `^0.12` |
+| [innis/nostr-relay](https://github.com/johninnis/nostr-relay) | `^0.13` |
 | [amphp/http-server](https://github.com/amphp/http-server) | `^3.0` |
 
 nostr-relay leaves the HTTP server to its host, so `bin/start-relay.php` constructs the `SocketHttpServer`, exposes it on the relay's listening address, and mounts the relay's request handler on it. The in-memory event store ships with the library, so the demo carries none of its own.

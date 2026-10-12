@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "394c9300e60e8bfce710d76ca438c38e",
+    "content-hash": "3a90d34745b145c6d5d339f9c7c2a51c",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1580,16 +1580,16 @@
         },
         {
             "name": "innis/nostr-relay",
-            "version": "v0.12.0",
+            "version": "v0.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johninnis/nostr-relay.git",
-                "reference": "83a18d27670c71b2de1f87865a5dea943dae4c09"
+                "reference": "c2d05ccfda7494ff365e2e85f175e5c6aebedf4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johninnis/nostr-relay/zipball/83a18d27670c71b2de1f87865a5dea943dae4c09",
-                "reference": "83a18d27670c71b2de1f87865a5dea943dae4c09",
+                "url": "https://api.github.com/repos/johninnis/nostr-relay/zipball/c2d05ccfda7494ff365e2e85f175e5c6aebedf4e",
+                "reference": "c2d05ccfda7494ff365e2e85f175e5c6aebedf4e",
                 "shasum": ""
             },
             "require": {
@@ -1613,7 +1613,8 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Innis\\Nostr\\Relay\\": "src/"
+                    "Innis\\Nostr\\Relay\\": "src/",
+                    "Innis\\Nostr\\Relay\\Tests\\Contract\\": "tests/Contract/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1638,9 +1639,9 @@
             ],
             "support": {
                 "issues": "https://github.com/johninnis/nostr-relay/issues",
-                "source": "https://github.com/johninnis/nostr-relay/tree/v0.12.0"
+                "source": "https://github.com/johninnis/nostr-relay/tree/v0.13.0"
             },
-            "time": "2026-10-11T10:27:15+00:00"
+            "time": "2026-10-12T04:31:56+00:00"
         },
         {
             "name": "kelunik/certificate",
