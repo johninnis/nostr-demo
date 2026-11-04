@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b1dbc3dd0ba52894e65484f3c7e5dfc",
+    "content-hash": "5cbf06d2c65d8079b01bd1a0f367d7b6",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1512,16 +1512,16 @@
         },
         {
             "name": "innis/nostr-core",
-            "version": "v0.10.0",
+            "version": "v0.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johninnis/nostr-core.git",
-                "reference": "68deb01bd13edd2dfb953cfa4806e558a1912337"
+                "reference": "1eb43bdf357052bfd819c8811dc1119633f7fa65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johninnis/nostr-core/zipball/68deb01bd13edd2dfb953cfa4806e558a1912337",
-                "reference": "68deb01bd13edd2dfb953cfa4806e558a1912337",
+                "url": "https://api.github.com/repos/johninnis/nostr-core/zipball/1eb43bdf357052bfd819c8811dc1119633f7fa65",
+                "reference": "1eb43bdf357052bfd819c8811dc1119633f7fa65",
                 "shasum": ""
             },
             "require": {
@@ -1540,10 +1540,10 @@
                 "ext-ffi": "*",
                 "friendsofphp/php-cs-fixer": "^3.95",
                 "innis/coding-standards": "^0.2",
-                "phpstan/phpstan": "~2.3.1",
+                "phpstan/phpstan": "~2.3.4",
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpunit/phpunit": "^13.1",
-                "rector/rector": "~2.7.0"
+                "rector/rector": "~2.8.3"
             },
             "suggest": {
                 "ext-ffi": "Native libsecp256k1 acceleration and NIP-49 scrypt (required for NIP-49)"
@@ -1574,29 +1574,29 @@
             ],
             "support": {
                 "issues": "https://github.com/johninnis/nostr-core/issues",
-                "source": "https://github.com/johninnis/nostr-core/tree/v0.10.0"
+                "source": "https://github.com/johninnis/nostr-core/tree/v0.10.1"
             },
-            "time": "2026-10-11T09:14:55+00:00"
+            "time": "2026-11-04T03:23:38+00:00"
         },
         {
             "name": "innis/nostr-relay",
-            "version": "v0.13.0",
+            "version": "v0.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johninnis/nostr-relay.git",
-                "reference": "c2d05ccfda7494ff365e2e85f175e5c6aebedf4e"
+                "reference": "cb66fd468f23ce3faf5cddfc602e6e52b6225e7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johninnis/nostr-relay/zipball/c2d05ccfda7494ff365e2e85f175e5c6aebedf4e",
-                "reference": "c2d05ccfda7494ff365e2e85f175e5c6aebedf4e",
+                "url": "https://api.github.com/repos/johninnis/nostr-relay/zipball/cb66fd468f23ce3faf5cddfc602e6e52b6225e7d",
+                "reference": "cb66fd468f23ce3faf5cddfc602e6e52b6225e7d",
                 "shasum": ""
             },
             "require": {
                 "amphp/amp": "^3.0",
                 "amphp/http-server": "^3.0",
                 "amphp/websocket-server": "^4.0",
-                "innis/nostr-core": "^0.10",
+                "innis/nostr-core": "^0.10.1",
                 "php": "^8.4",
                 "psr/log": "^3.0"
             },
@@ -1605,10 +1605,10 @@
                 "ext-ffi": "*",
                 "friendsofphp/php-cs-fixer": "^3.95",
                 "innis/coding-standards": "^0.2",
-                "phpstan/phpstan": "~2.3.1",
+                "phpstan/phpstan": "~2.3.4",
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpunit/phpunit": "^13.1",
-                "rector/rector": "~2.7.0"
+                "rector/rector": "~2.8.3"
             },
             "type": "library",
             "autoload": {
@@ -1639,9 +1639,9 @@
             ],
             "support": {
                 "issues": "https://github.com/johninnis/nostr-relay/issues",
-                "source": "https://github.com/johninnis/nostr-relay/tree/v0.13.0"
+                "source": "https://github.com/johninnis/nostr-relay/tree/v0.14.0"
             },
-            "time": "2026-10-12T04:31:56+00:00"
+            "time": "2026-11-04T03:42:37+00:00"
         },
         {
             "name": "kelunik/certificate",
