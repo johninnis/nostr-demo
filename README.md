@@ -11,7 +11,7 @@ Four standalone scripts demonstrate key generation, running a local relay with t
 - PHP 8.4 or higher
 - The `ctype`, `filter`, `gmp`, `intl`, `mbstring`, `openssl` and `sodium` extensions, which nostr-core and the amphp packages require
 - The `pcntl` extension, which `bin/start-relay.php` uses to stop on Ctrl+C (`SIGINT`) or `SIGTERM`
-- The `ffi` extension, which `composer.json` declares among its development requirements, so `composer install` needs it unless run with `--no-dev`. With the native `libsecp256k1` library installed, nostr-core signs and verifies through it; without it, nostr-core falls back to a slower pure-PHP path that is not constant-time
+- The `ffi` extension and the native `libsecp256k1` library, which nostr-core signs and verifies through. `composer.json` requires the extension, and the scripts stop with an error if the library cannot be loaded
 
 ## Dependencies
 

@@ -12,10 +12,11 @@
     ],
     "require": {
         "php": "^8.4",
-        "amphp/http-server": "^3.0",
-        "innis/nostr-client": "^0.10",
-        "innis/nostr-core": "^0.10",
-        "innis/nostr-relay": "^0.14"
+        "ext-ffi": "*",
+        "amphp/http-server": "^3.4.8",
+        "innis/nostr-client": "^0.11",
+        "innis/nostr-core": "^0.11",
+        "innis/nostr-relay": "^0.15"
     },
     "autoload": {
         "psr-4": {
@@ -23,11 +24,10 @@
         }
     },
     "require-dev": {
-        "ext-ffi": "*",
-        "friendsofphp/php-cs-fixer": "^3.95",
-        "innis/coding-standards": "^0.2",
-        "phpstan/phpstan": "~2.3.4",
-        "rector/rector": "~2.8.3"
+        "friendsofphp/php-cs-fixer": "^3.95.29",
+        "innis/coding-standards": "^0.2.4",
+        "phpstan/phpstan": "~2.3.5",
+        "rector/rector": "~2.8.4"
     },
     "scripts": {
         "test": [
